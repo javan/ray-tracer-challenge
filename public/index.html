@@ -4,21 +4,6 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="main.css">
   <script src="bundle.js" async></script>
-  <style>
-    * {
-      font-family: monospace;
-      font-size: 13px;
-    }
-
-    details > *:not(summary) {
-      padding: 10px;
-    }
-
-    summary {
-      font-weight: bold;
-    }
-
-  </style>
 </head>
 <body data-controller="chapters">
   <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
@@ -33,6 +18,7 @@
       <ol data-target="chapter-01.positionList"></ol>
     </div>
   </details>
+
   <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 2</summary>
     <div data-controller="chapter-02">

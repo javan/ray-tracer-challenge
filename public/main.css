@@ -1,3 +1,42 @@
+* {
+  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  padding: 1.5em;
+}
+
+details, form, p {
+  margin-bottom: 1em;
+}
+
+details > *:not(summary) {
+  padding: 1em;
+}
+
+details:not([open]) {
+  opacity: 0.4;
+}
+
+details summary {
+  outline: none;
+  cursor: zoom-in;
+}
+
+details[open] summary {
+  font-weight: bold;
+  cursor: zoom-out;
+}
+
+ul, ol, li {
+  margin-left: 1em;
+}
+
+button {
+  font-size: 11px;
+  padding: 2px 8px 3px 8px;
 }
