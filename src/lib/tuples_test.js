@@ -1,5 +1,5 @@
 import test from "ava"
-import { tuple, position, point, vector } from "./tuples"
+import { tuple, position, point, vector, color } from "./tuples"
 
 test("position with w=1.0 is a point", t => {
   const a = position(4.3, -4.2, 3.1, 1.0)
@@ -130,4 +130,34 @@ test("cross product of two vectors", t => {
   const b = vector(2, 3, 4)
   t.deepEqual(a.crossProduct(b), vector(-1, 2, -1))
   t.deepEqual(b.crossProduct(a), vector(1, -2, 1))
+})
+
+test("colors are (red, green, blue) tuples", t => {
+  const c = color(-0.5, 0.4, 1.7)
+  t.is(c.red, -0.5)
+  t.is(c.green, 0.4)
+  t.is(c.blue, 1.7)
+})
+
+test("adding colors", t => {
+  const c1 = color(0.9, 0.6, 0.75)
+  const c2 = color(0.5, 0.1, 0.25)
+  t.deepEqual(c1.add(c2), color(1.4, 0.7, 1.0))
+})
+
+test("subtracting colors", t => {
+  const c1 = color(0.9, 0.6, 0.75)
+  const c2 = color(0.5, 0.1, 0.25)
+  t.deepEqual(c1.subtract(c2), color(0.4, 0.5, 0.5))
+})
+
+test("multiplying a color by a scalar", t => {
+  const c = color(0.2, 0.3, 0.4)
+  t.deepEqual(c.multiplyBy(2), color(0.4, 0.6, 0.8))
+})
+
+test("multiplying colors", t => {
+  const c1 = color(1, 0.2, 0.3)
+  const c2 = color(0.9, 1, 0.1)
+  t.deepEqual(c1.multiplyBy(c2), color(0.9, 0.2, 0.03))
 })

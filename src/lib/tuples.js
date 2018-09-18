@@ -2,6 +2,7 @@ export const tuple = (...values) => new Tuple(...values)
 export const position = (x, y, z, w) => new Position(x, y, z, w)
 export const vector = (x, y, z) => position(x, y, z, 0)
 export const point = (x, y, z) => position(x, y, z, 1)
+export const color = (red, green, blue) => new Color(red, green, blue)
 
 class Tuple extends Array {
   add(tuple) {
@@ -14,8 +15,10 @@ class Tuple extends Array {
     return new this.constructor(...values)
   }
 
-  multiplyBy(number) {
-    const values = this.map(value => value * number)
+  multiplyBy(object) {
+    const values = object instanceof Tuple
+      ? this.map((value, index) => value * object[index])
+      : this.map(value => value * object)
     return new this.constructor(...values)
   }
 
@@ -62,5 +65,10 @@ class Position extends Tuple {
   }
 }
 
-const sum = (result, value) => result + value
+class Color extends Tuple {
+  get red()   { return this[0] }
+  get green() { return this[1] }
+  get blue()  { return this[2] }
+}
 
+const sum = (result, value) => result + value
