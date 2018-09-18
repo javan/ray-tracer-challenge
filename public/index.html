@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-  <details open>
+  <details>
     <summary>Chapter 1</summary>
     <div data-controller="chapter-01">
       <form data-action="chapter-01#run">
@@ -31,6 +31,12 @@
         <input type="submit" value="Run">
       </form>
       <ol data-target="chapter-01.positionList"></ol>
+    </div>
+  </details>
+  <details>
+    <summary>Chapter 2</summary>
+    <div data-controller="chapter-02">
+      <button data-action="chapter-02#download">Download</button>
     </div>
   </details>
 </body>
