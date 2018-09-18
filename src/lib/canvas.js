@@ -1,26 +1,99 @@
 import { color } from "./tuples"
 
-export const canvas = (width, height) => new Canvas(width, height)
+export const canvas = (width, height, fillColor) => new Canvas(width, height, fillColor)
 
 class Canvas {
-  constructor(width, height) {
+  constructor(width, height, fillColor = color(0, 0, 0)) {
     this.width = width
     this.height = height
-    this.pixels = fill(width, () => fill(height, black))
+    this.pixels = array(height, () => array(width, fillColor))
   }
 
   pixelAt(x, y) {
-    return this.pixels[x][y]
+    return this.pixels[y][x]
   }
 
   writePixel(x, y, value) {
-    this.pixels[x][y] = value
+    this.pixels[y][x] = value
+  }
+
+  toPPM() {
+    return PPM.from(this)
   }
 }
 
-const black = color(0, 0, 0)
+class PPM {
+  static from(canvas) {
+    return new PPM(canvas).toString()
+  }
 
-const fill = (length, value) =>
-  typeof value == "function"
-    ? Array.from({ length }, value)
-    : Array(length).fill(value)
+  constructor(canvas) {
+    this.canvas = canvas
+  }
+
+  toString() {
+    return this.lines.join("\n") + "\n"
+  }
+
+  get lines() {
+    return [
+      ...this.headerLines,
+      ...this.dataLines
+    ]
+  }
+
+  get headerLines() {
+    return [
+      this.identifier,
+      this.dimensions,
+      this.maxColorValue
+    ]
+  }
+
+  get dataLines() {
+    const lines = []
+    for (const row of this.canvas.pixels) {
+      let line = []
+
+      for (const color of row) {
+        for (const rgb of color) {
+          const data = Math.round(clamp(rgb, 0, 1) * this.maxColorValue).toString()
+          if (data.length + line.length * 4 > this.maxLineLength) {
+            lines.push(line.join(" "))
+            line = [data]
+          } else {
+            line.push(data)
+          }
+        }
+      }
+
+      if (line.length) {
+        lines.push(line.join(" "))
+      }
+    }
+    return lines
+  }
+
+  get identifier() {
+    return "P3"
+  }
+
+  get dimensions() {
+    return `${this.canvas.width} ${this.canvas.height}`
+  }
+
+  get maxColorValue() {
+    return 255
+  }
+
+  get maxLineLength() {
+    return 70
+  }
+}
+
+const array = (length, fill) =>
+  typeof fill == "function"
+    ? Array.from({ length }, fill)
+    : Array(length).fill(fill)
+
+const clamp = (number, min, max) => Math.max(min, Math.min(max, number))
