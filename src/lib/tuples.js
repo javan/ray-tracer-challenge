@@ -1,73 +1,30 @@
-export function tuple(x, y, z, w) {
-  return new Tuple(x, y, z, w)
-}
+export const tuple = (...values) => new Tuple(...values)
+export const position = (x, y, z, w) => new Position(x, y, z, w)
+export const vector = (x, y, z) => position(x, y, z, 0)
+export const point = (x, y, z) => position(x, y, z, 1)
 
-export function point(x, y, z) {
-  return tuple(x, y, z, 1)
-}
-
-export function vector(x, y, z) {
-  return tuple(x, y, z, 0)
-}
-
-class Tuple {
-  constructor(x, y, z, w) {
-    this.x = x
-    this.y = y
-    this.z = z
-    this.w = w
-  }
-
+class Tuple extends Array {
   add(tuple) {
-    return new Tuple(
-      this.x + tuple.x,
-      this.y + tuple.y,
-      this.z + tuple.z,
-      this.w + tuple.w
-    )
+    const values = this.map((value, index) => value + tuple[index])
+    return new this.constructor(...values)
   }
 
   subtract(tuple) {
-    return new Tuple(
-      this.x - tuple.x,
-      this.y - tuple.y,
-      this.z - tuple.z,
-      this.w - tuple.w
-    )
+    const values = this.map((value, index) => value - tuple[index])
+    return new this.constructor(...values)
   }
 
-  multiplyBy(value) {
-    return new Tuple(
-      this.x * value,
-      this.y * value,
-      this.z * value,
-      this.w * value
-    )
+  multiplyBy(number) {
+    const values = this.map(value => value * number)
+    return new this.constructor(...values)
   }
 
-  divideBy(value) {
-    return this.multiplyBy(1 / value)
+  divideBy(number) {
+    return this.multiplyBy(1 / number)
   }
 
   dotProduct(tuple) {
-    return (
-      this.x * tuple.x +
-      this.y * tuple.y +
-      this.z * tuple.z +
-      this.w * tuple.w
-    )
-  }
-
-  crossProduct(tuple) {
-    if (!this.isVector || !tuple.isVector)
-      throw new Error("Tuples must be vectors")
-
-    return new Tuple(
-      this.y * tuple.z - this.z * tuple.y,
-      this.z * tuple.x - this.x * tuple.z,
-      this.x * tuple.y - this.y * tuple.x,
-      this.w
-    )
+    return this.map((value, index) => value * tuple[index]).reduce(sum)
   }
 
   get negate() {
@@ -75,29 +32,35 @@ class Tuple {
   }
 
   get normalize() {
-    const { magnitude } = this
-    return new Tuple(
-      this.x / magnitude,
-      this.y / magnitude,
-      this.z / magnitude,
-      this.w / magnitude
-    )
+    return this.divideBy(this.magnitude)
   }
 
   get magnitude() {
-    return Math.sqrt(
-      this.x ** 2 +
-      this.y ** 2 +
-      this.z ** 2 +
-      this.w ** 2
-    )
-  }
-
-  get isPoint() {
-    return this.w == 1
-  }
-
-  get isVector() {
-    return this.w == 0
+    return Math.sqrt(this.map(value => value ** 2).reduce(sum))
   }
 }
+
+class Position extends Tuple {
+  get x() { return this[0] }
+  get y() { return this[1] }
+  get z() { return this[2] }
+  get w() { return this[3] }
+
+  get isPoint()  { return this.w == 1 }
+  get isVector() { return this.w == 0 }
+
+  crossProduct(position) {
+    if (!this.isVector || !position.isVector)
+      throw new Error("Positions must be vectors")
+
+    return new this.constructor(
+      this.y * position.z - this.z * position.y,
+      this.z * position.x - this.x * position.z,
+      this.x * position.y - this.y * position.x,
+      this.w
+    )
+  }
+}
+
+const sum = (result, value) => result + value
+

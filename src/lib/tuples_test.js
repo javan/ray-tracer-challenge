@@ -1,8 +1,8 @@
 import test from "ava"
-import { tuple, point, vector } from "./tuples"
+import { tuple, position, point, vector } from "./tuples"
 
-test("tuple with w=1.0 is a point", t => {
-  const a = tuple(4.3, -4.2, 3.1, 1.0)
+test("position with w=1.0 is a point", t => {
+  const a = position(4.3, -4.2, 3.1, 1.0)
   t.is(a.x, 4.3)
   t.is(a.y, -4.2)
   t.is(a.z, 3.1)
@@ -11,8 +11,8 @@ test("tuple with w=1.0 is a point", t => {
   t.is(a.isVector, false)
 })
 
-test("tuple with w=0 is a vector", t => {
-  const a = tuple(4.3, -4.2, 3.1, 0.0)
+test("position with w=0 is a vector", t => {
+  const a = position(4.3, -4.2, 3.1, 0.0)
   t.is(a.x, 4.3)
   t.is(a.y, -4.2)
   t.is(a.z, 3.1)
@@ -21,12 +21,12 @@ test("tuple with w=0 is a vector", t => {
   t.is(a.isVector, true)
 })
 
-test("point describes tuples with w=1", t => {
-  t.deepEqual(point(4, -4, 3), tuple(4, -4, 3, 1))
+test("point describes positions with w=1", t => {
+  t.deepEqual(point(4, -4, 3), position(4, -4, 3, 1))
 })
 
-test("vector describes tuples with w=0", t => {
-  t.deepEqual(vector(4, -4, 3), tuple(4, -4, 3, 0))
+test("vector describes positions with w=0", t => {
+  t.deepEqual(vector(4, -4, 3), position(4, -4, 3, 0))
 })
 
 test("adding two tuples", t => {
