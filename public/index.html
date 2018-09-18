@@ -20,8 +20,8 @@
 
   </style>
 </head>
-<body>
-  <details>
+<body data-controller="chapters">
+  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 1</summary>
     <div data-controller="chapter-01">
       <form data-action="chapter-01#run">
@@ -33,7 +33,7 @@
       <ol data-target="chapter-01.positionList"></ol>
     </div>
   </details>
-  <details>
+  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 2</summary>
     <div data-controller="chapter-02">
       <button data-action="chapter-02#download">Download</button>
