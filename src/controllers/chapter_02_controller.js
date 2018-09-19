@@ -19,8 +19,11 @@ export default class extends Controller {
     downloadCanvas(c, "hello-world.ppm")
   }
 
-  renderProjectile() {
+  async renderProjectile() {
+    await nextIdle()
     const element = this.projectileCanvas.toDOMCanvas()
+
+    await nextFrame()
     this.projectileTarget.innerHTML = ""
     this.projectileTarget.appendChild(element)
   }
@@ -70,10 +73,10 @@ function getProjectilePositions(speed) {
   return positions
 }
 
-function downloadCanvas(canvas, filename) {
+async function downloadCanvas(canvas, filename) {
   const blob = new Blob([ canvas.toPPM() ], { type: "image/x-portable-pixmap" })
-
   const element = document.createElement("a")
+
   element.href = URL.createObjectURL(blob)
   element.download = filename
   element.style = "position: absolute; left: -9999px;"
@@ -81,8 +84,19 @@ function downloadCanvas(canvas, filename) {
   document.body.appendChild(element)
   element.click()
 
-  Promise.resolve().then(() => {
-    element.remove()
-    URL.revokeObjectURL(element.href)
+  await nextFrame()
+  element.remove()
+  URL.revokeObjectURL(element.href)
+}
+
+function nextFrame() {
+  return new Promise(resolve => requestAnimationFrame(resolve))
+}
+
+function nextIdle() {
+  return new Promise(resolve => {
+    window.requestIdleCallback
+      ? requestIdleCallback(resolve)
+      : setTimeout(resolve, 1)
   })
 }
