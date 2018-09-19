@@ -3,7 +3,11 @@ import { color, point, vector } from "../lib/tuples"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "speedInput" ]
+  static targets = [ "speedInput", "projectile" ]
+
+  connect() {
+    this.renderProjectile()
+  }
 
   downloadHelloWorld() {
     const c = canvas(5, 3)
@@ -15,19 +19,26 @@ export default class extends Controller {
     downloadCanvas(c, "hello-world.ppm")
   }
 
+  renderProjectile() {
+    const element = this.projectileCanvas.toDOMCanvas()
+    this.projectileTarget.innerHTML = ""
+    this.projectileTarget.appendChild(element)
+  }
+
   downloadProjectile(event) {
     event.preventDefault()
+    downloadCanvas(this.projectileCanvas, "projectile.ppm")
+  }
 
+  get projectileCanvas() {
     const c = canvas(900, 550)
     const red = color(1.5, 0, 0)
     const positions = getProjectilePositions(this.speed)
-
     positions.forEach(({ x, y }) => {
       y = Math.abs(550 - y)
       c.writePixel(x, y, red)
     })
-
-    downloadCanvas(c, "projectile.ppm")
+    return c
   }
 
   get speed() {

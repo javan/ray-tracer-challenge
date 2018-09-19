@@ -28,10 +28,12 @@
 
       <form data-action="chapter-02#downloadProjectile">
         <label>
-          Speed: <input type="number" data-target="chapter-02.speedInput" step="0.25" value="11.25" style="width: 5em;">
+          Speed: <input type="number" data-target="chapter-02.speedInput" data-action="input->chapter-02#renderProjectile" step="0.25" value="11.25" style="width: 5em;">
         </label>
         <input type="submit" value="Download projectile.ppm">
       </form>
+
+      <div data-target="chapter-02.projectile"></div>
     </div>
   </details>
 </body>

@@ -6,7 +6,9 @@ class Canvas {
   constructor(width, height, fillColor = color(0, 0, 0)) {
     this.width = width
     this.height = height
+    this.fillColor = fillColor
     this.pixels = array(height, () => array(width, fillColor))
+    this.dirtyPixels = new Map
   }
 
   hasPixelAt(x, y) {
@@ -22,11 +24,40 @@ class Canvas {
   writePixel(x, y, value) {
     if (this.hasPixelAt(x, y)) {
       this.pixels[y][x] = value
+      const key = JSON.stringify({ x, y })
+      this.dirtyPixels.set(key, value)
     }
+  }
+
+  eachDirtyPixel(callback) {
+    this.dirtyPixels.forEach((pixel, key) => {
+      const { x, y } = JSON.parse(key)
+      callback(pixel, x, y)
+    })
   }
 
   toPPM() {
     return PPM.from(this)
+  }
+
+  toDOMCanvas() {
+    const element = document.createElement("canvas")
+    element.width = this.width
+    element.height = this.height
+
+    const context = element.getContext("2d")
+    const [ r, g, b ] = this.fillColor.multiplyBy(255).clamp(0, 255).round
+    context.fillStyle = `rgb(${r}, ${g}, ${b}, 255)`
+    context.fillRect(0, 0, this.width, this.height)
+
+    this.eachDirtyPixel((pixel, x, y) => {
+      const [ r, g, b ] = pixel.multiplyBy(255).clamp(0, 255).round
+      const data = Uint8ClampedArray.of(r, g, b, 255)
+      const imageData = new ImageData(data, 1, 1)
+      context.putImageData(imageData, x, y)
+    })
+
+    return element
   }
 }
 
