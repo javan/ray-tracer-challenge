@@ -30,6 +30,16 @@ class Tuple extends Array {
     return this.map((value, index) => value * tuple[index]).reduce(sum)
   }
 
+  clamp(min, max) {
+    const values = this.map(value => Math.max(min, Math.min(max, value)))
+    return new this.constructor(...values)
+  }
+
+  get round() {
+    const values = this.map(value => Math.round(value))
+    return new this.constructor(...values)
+  }
+
   get negate() {
     return this.multiplyBy(-1)
   }

@@ -62,10 +62,10 @@ class PPM {
     const lines = []
     for (const row of this.canvas.pixels) {
       let line = []
-
       for (const color of row) {
-        for (const rgb of color) {
-          const data = Math.round(clamp(rgb, 0, 1) * this.maxColorValue).toString()
+        const rgb = color.multiplyBy(this.maxColorValue).clamp(0, this.maxColorValue).round
+        for (const number of rgb) {
+          const data = number.toString()
           if (data.length + line.length * 4 > this.maxLineLength) {
             lines.push(line.join(" "))
             line = [data]
@@ -74,7 +74,6 @@ class PPM {
           }
         }
       }
-
       if (line.length) {
         lines.push(line.join(" "))
       }
@@ -103,5 +102,3 @@ const array = (length, fill) =>
   typeof fill == "function"
     ? Array.from({ length }, fill)
     : Array(length).fill(fill)
-
-const clamp = (number, min, max) => Math.max(min, Math.min(max, number))
