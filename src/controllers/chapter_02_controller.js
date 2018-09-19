@@ -36,11 +36,13 @@ export default class extends Controller {
   get projectileCanvas() {
     const c = canvas(900, 550)
     const red = color(1.5, 0, 0)
-    const positions = getProjectilePositions(this.speed)
-    positions.forEach(({ x, y }) => {
+    const positions = projectilePositions(this.speed)
+
+    for (let { x, y } of positions) {
       y = Math.abs(550 - y)
       c.writePixel(x, y, red)
-    })
+    }
+
     return c
   }
 
@@ -49,28 +51,21 @@ export default class extends Controller {
   }
 }
 
-function getProjectilePositions(speed) {
-  const positions = []
-
+function *projectilePositions(speed) {
   const gravity = vector(0, -0.1, 0)
   const wind = vector(-0.01, 0, 0)
 
   let position = point(0, 1, 0)
   let velocity = vector(1, 1.8, 0).normalize.multiplyBy(speed)
 
-  function record() {
-    const x = Math.floor(position.x)
-    const y = Math.floor(position.y)
-    positions.push({ x, y })
-  }
-
   while (position.y > 0) {
-    record()
+    yield {
+      x: Math.floor(position.x),
+      y: Math.floor(position.y)
+    }
     position = position.add(velocity)
     velocity = velocity.add(gravity).add(wind)
   }
-
-  return positions
 }
 
 async function downloadCanvas(canvas, filename) {
