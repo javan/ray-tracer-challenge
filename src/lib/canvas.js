@@ -46,14 +46,11 @@ class Canvas {
     element.height = this.height
 
     const context = element.getContext("2d")
-    const [ r, g, b ] = this.fillColor.multiplyBy(255).clamp(0, 255).round
-    context.fillStyle = `rgb(${r}, ${g}, ${b}, 255)`
+    context.fillStyle = `rgb(${this.fillColor.rgb})`
     context.fillRect(0, 0, this.width, this.height)
 
     this.eachDirtyPixel((pixel, x, y) => {
-      const [ r, g, b ] = pixel.multiplyBy(255).clamp(0, 255).round
-      const data = Uint8ClampedArray.of(r, g, b, 255)
-      const imageData = new ImageData(data, 1, 1)
+      const imageData = new ImageData(pixel.rgba, 1, 1)
       context.putImageData(imageData, x, y)
     })
 
@@ -94,8 +91,7 @@ class PPM {
     for (const row of this.canvas.pixels) {
       let line = []
       for (const color of row) {
-        const rgb = color.multiplyBy(this.maxColorValue).clamp(0, this.maxColorValue).round
-        for (const number of rgb) {
+        for (const number of color.rgb) {
           const data = number.toString()
           if (data.length + line.length * 4 > this.maxLineLength) {
             lines.push(line.join(" "))
