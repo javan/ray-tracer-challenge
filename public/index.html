@@ -22,7 +22,16 @@
   <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 2</summary>
     <div data-controller="chapter-02">
-      <button data-action="chapter-02#download">Download</button>
+      <p>
+        <button data-action="chapter-02#downloadHelloWorld">Download hello-world.ppm</button>
+      </p>
+
+      <form data-action="chapter-02#downloadProjectile">
+        <label>
+          Speed: <input type="number" data-target="chapter-02.speedInput" step="0.25" value="11.25" style="width: 5em;">
+        </label>
+        <input type="submit" value="Download projectile.ppm">
+      </form>
     </div>
   </details>
 </body>

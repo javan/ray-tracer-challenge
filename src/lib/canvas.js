@@ -9,12 +9,20 @@ class Canvas {
     this.pixels = array(height, () => array(width, fillColor))
   }
 
+  hasPixelAt(x, y) {
+    return x >= 0 && x < this.width && y >= 0 && y < this.height
+  }
+
   pixelAt(x, y) {
-    return this.pixels[y][x]
+    if (this.hasPixelAt(x, y)) {
+      return this.pixels[y][x]
+    }
   }
 
   writePixel(x, y, value) {
-    this.pixels[y][x] = value
+    if (this.hasPixelAt(x, y)) {
+      this.pixels[y][x] = value
+    }
   }
 
   toPPM() {
