@@ -22,14 +22,14 @@
   <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 2</summary>
     <div data-controller="chapter-02">
-      <form data-action="chapter-02#downloadProjectile">
+      <form data-action="chapter-02#download">
         <label>
-          Speed: <input type="number" data-target="chapter-02.speedInput" data-action="input->chapter-02#renderProjectile" step="0.25" value="11.25" style="width: 5em;">
+          Speed: <input type="number" data-target="chapter-02.speedInput" data-action="input->chapter-02#render" step="0.25" value="11.25" style="width: 5em;">
         </label>
         <input type="submit" value="Download projectile.ppm">
       </form>
 
-      <div data-target="chapter-02.projectile"></div>
+      <div data-target="chapter-02.preview"></div>
     </div>
   </details>
 </body>

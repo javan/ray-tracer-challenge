@@ -3,36 +3,37 @@ import { downloadCanvas, nextFrame, nextIdle } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "speedInput", "projectile" ]
+  static targets = [ "speedInput", "preview" ]
 
   connect() {
-    this.renderProjectile()
+    this.render()
   }
 
-  async renderProjectile() {
+  async render() {
     await nextIdle()
-    const element = this.projectileCanvas.toDOMCanvas()
+    const element = this.canvas.toDOMCanvas()
 
     await nextFrame()
-    this.projectileTarget.innerHTML = ""
-    this.projectileTarget.appendChild(element)
+    this.previewTarget.innerHTML = ""
+    this.previewTarget.appendChild(element)
   }
 
-  downloadProjectile(event) {
+  download(event) {
     event.preventDefault()
-    downloadCanvas(this.projectileCanvas, "projectile.ppm")
+    downloadCanvas(this.canvas, "projectile.ppm")
   }
 
-  get projectileCanvas() {
+  get canvas() {
     const canvas = new Canvas(900, 550)
     const red = Color.of(1.5, 0, 0)
-    const positions = projectilePositions(this.speed)
-    for (let { x, y } of positions) {
+
+    for (let { x, y } of positions(this.speed)) {
       if (canvas.hasPixelAt(x, y)) {
         y = Math.abs(canvas.height - y)
         canvas.writePixel(x, y, red)
       }
     }
+
     return canvas
   }
 
@@ -41,7 +42,7 @@ export default class extends Controller {
   }
 }
 
-function *projectilePositions(speed) {
+function *positions(speed) {
   const gravity = Position.vector(0, -0.1, 0)
   const wind = Position.vector(-0.01, 0, 0)
 
