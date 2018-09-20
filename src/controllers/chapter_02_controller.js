@@ -1,4 +1,5 @@
 import { Canvas, Color, Position } from "../models"
+import { downloadCanvas, nextFrame, nextIdle } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -55,32 +56,4 @@ function *projectilePositions(speed) {
     position = position.add(velocity)
     velocity = velocity.add(gravity).add(wind)
   }
-}
-
-async function downloadCanvas(canvas, filename) {
-  const blob = new Blob([ canvas.toPPM() ], { type: "image/x-portable-pixmap" })
-  const element = document.createElement("a")
-
-  element.href = URL.createObjectURL(blob)
-  element.download = filename
-  element.style = "position: absolute; left: -9999px;"
-
-  document.body.appendChild(element)
-  element.click()
-
-  await nextFrame()
-  element.remove()
-  URL.revokeObjectURL(element.href)
-}
-
-function nextFrame() {
-  return new Promise(resolve => requestAnimationFrame(resolve))
-}
-
-function nextIdle() {
-  return new Promise(resolve => {
-    window.requestIdleCallback
-      ? requestIdleCallback(resolve)
-      : setTimeout(resolve, 1)
-  })
 }
