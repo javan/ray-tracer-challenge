@@ -9,16 +9,6 @@ export default class extends Controller {
     this.renderProjectile()
   }
 
-  downloadHelloWorld() {
-    const c = canvas(5, 3)
-
-    c.writePixel(0, 0, color(1.5, 0, 0))
-    c.writePixel(2, 1, color(0, 0.5, 0))
-    c.writePixel(4, 2, color(-0.5, 0, 1))
-
-    downloadCanvas(c, "hello-world.ppm")
-  }
-
   async renderProjectile() {
     await nextIdle()
     const element = this.projectileCanvas.toDOMCanvas()
