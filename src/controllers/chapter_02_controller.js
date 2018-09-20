@@ -27,12 +27,12 @@ export default class extends Controller {
     const c = canvas(900, 550)
     const red = color(1.5, 0, 0)
     const positions = projectilePositions(this.speed)
-
     for (let { x, y } of positions) {
-      y = Math.abs(550 - y)
-      c.writePixel(x, y, red)
+      if (c.hasPixelAt(x, y)) {
+        y = Math.abs(c.height - y)
+        c.writePixel(x, y, red)
+      }
     }
-
     return c
   }
 
