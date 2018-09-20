@@ -37,23 +37,6 @@ export class Canvas {
   toPPM() {
     return PPM.from(this)
   }
-
-  toDOMCanvas() {
-    const element = document.createElement("canvas")
-    element.width = this.width
-    element.height = this.height
-
-    const context = element.getContext("2d")
-    context.fillStyle = `rgb(${this.fillColor.rgb})`
-    context.fillRect(0, 0, this.width, this.height)
-
-    this.eachDirtyPixel((pixel, x, y) => {
-      const imageData = new ImageData(pixel.rgba, 1, 1)
-      context.putImageData(imageData, x, y)
-    })
-
-    return element
-  }
 }
 
 class PPM {

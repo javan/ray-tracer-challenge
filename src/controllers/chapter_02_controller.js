@@ -1,5 +1,5 @@
 import { Canvas, Color, Position } from "../models"
-import { downloadCanvas, nextFrame, nextIdle } from "../helpers"
+import { downloadCanvas, createElementForCanvas, nextFrame, nextIdle } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -11,7 +11,7 @@ export default class extends Controller {
 
   async render() {
     await nextIdle()
-    const element = this.canvas.toDOMCanvas()
+    const element = createElementForCanvas(this.canvas)
 
     await nextFrame()
     this.previewTarget.innerHTML = ""
