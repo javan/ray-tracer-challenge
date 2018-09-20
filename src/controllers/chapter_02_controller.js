@@ -1,5 +1,5 @@
 import { Canvas, Color, Position } from "../models"
-import { downloadCanvas, createElementForCanvas, nextFrame, nextIdle } from "../helpers"
+import { createElementForCanvas, nextFrame, nextIdle } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -18,9 +18,13 @@ export default class extends Controller {
     this.previewTarget.appendChild(element)
   }
 
-  download(event) {
-    event.preventDefault()
-    downloadCanvas(this.canvas, "projectile.ppm")
+  async download(event) {
+    const blob = this.canvas.toPPM().toBlob()
+    const url = URL.createObjectURL(blob)
+    event.currentTarget.href = url
+
+    await nextFrame()
+    URL.revokeObjectURL(url)
   }
 
   get canvas() {

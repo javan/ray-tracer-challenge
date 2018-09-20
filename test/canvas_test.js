@@ -26,7 +26,7 @@ test("writing pixels to a canvas", t => {
 
 test("constructing the PPM header", t => {
   const c = new Canvas(5, 3)
-  const lines = c.toPPM().split("\n")
+  const lines = `${c.toPPM()}`.split("\n")
   t.is(lines[0], "P3")
   t.is(lines[1], "5 3")
   t.is(lines[2], "255")
@@ -37,7 +37,7 @@ test("constructing the PPM pixel data", t => {
   c.writePixel(0, 0, Color.of(1.5, 0, 0))
   c.writePixel(2, 1, Color.of(0, 0.5, 0))
   c.writePixel(4, 2, Color.of(-0.5, 0, 1))
-  const lines = c.toPPM().split("\n")
+  const lines = `${c.toPPM()}`.split("\n")
   t.is(lines[3], "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0")
   t.is(lines[4], "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0")
   t.is(lines[5], "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255")
@@ -45,7 +45,7 @@ test("constructing the PPM pixel data", t => {
 
 test("splitting long lines in PPM files", t => {
   const c = new Canvas(10, 20, Color.of(1, 0.8, 0.6))
-  const lines = c.toPPM().split("\n")
+  const lines = `${c.toPPM()}`.split("\n")
   t.is(lines[3], "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204")
   t.is(lines[4], "153 255 204 153 255 204 153 255 204 153 255 204 153")
   t.is(lines[5], "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204")
@@ -54,5 +54,5 @@ test("splitting long lines in PPM files", t => {
 
 test("PPM files are terminated by a newline", t => {
   const c = new Canvas(5, 3)
-  t.is(c.toPPM().slice(-1), "\n")
+  t.is(`${c.toPPM()}`.slice(-1), "\n")
 })

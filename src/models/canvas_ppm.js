@@ -1,14 +1,14 @@
 export class CanvasPPM {
-  static from(canvas) {
-    return new CanvasPPM(canvas).toString()
-  }
-
   constructor(canvas) {
     this.canvas = canvas
   }
 
   toString() {
     return this.lines.join("\n") + "\n"
+  }
+
+  toBlob() {
+    return new Blob([ this.toString() ], { type: "image/x-portable-pixmap" })
   }
 
   get lines() {

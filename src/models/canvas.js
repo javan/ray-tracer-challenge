@@ -36,7 +36,7 @@ export class Canvas {
   }
 
   toPPM() {
-    return CanvasPPM.from(this)
+    return new CanvasPPM(this)
   }
 }
 
