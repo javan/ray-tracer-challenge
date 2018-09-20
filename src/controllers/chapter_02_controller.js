@@ -1,5 +1,4 @@
-import { canvas } from "../lib/canvas"
-import { color, point, vector } from "../lib/tuples"
+import { Canvas, Color, Position } from "../models"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -24,16 +23,16 @@ export default class extends Controller {
   }
 
   get projectileCanvas() {
-    const c = canvas(900, 550)
-    const red = color(1.5, 0, 0)
+    const canvas = new Canvas(900, 550)
+    const red = Color.of(1.5, 0, 0)
     const positions = projectilePositions(this.speed)
     for (let { x, y } of positions) {
-      if (c.hasPixelAt(x, y)) {
-        y = Math.abs(c.height - y)
-        c.writePixel(x, y, red)
+      if (canvas.hasPixelAt(x, y)) {
+        y = Math.abs(canvas.height - y)
+        canvas.writePixel(x, y, red)
       }
     }
-    return c
+    return canvas
   }
 
   get speed() {
@@ -42,11 +41,11 @@ export default class extends Controller {
 }
 
 function *projectilePositions(speed) {
-  const gravity = vector(0, -0.1, 0)
-  const wind = vector(-0.01, 0, 0)
+  const gravity = Position.vector(0, -0.1, 0)
+  const wind = Position.vector(-0.01, 0, 0)
 
-  let position = point(0, 1, 0)
-  let velocity = vector(1, 1.8, 0).normalize.multiplyBy(speed)
+  let position = Position.point(0, 1, 0)
+  let velocity = Position.vector(1, 1.8, 0).normalize.multiplyBy(speed)
 
   while (position.y > 0) {
     yield {

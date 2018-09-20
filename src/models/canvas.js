@@ -1,9 +1,7 @@
-import { color } from "./tuples"
+import { Color } from "./color"
 
-export const canvas = (width, height, fillColor) => new Canvas(width, height, fillColor)
-
-class Canvas {
-  constructor(width, height, fillColor = color(0, 0, 0)) {
+export class Canvas {
+  constructor(width, height, fillColor = Color.of(0, 0, 0)) {
     this.width = width
     this.height = height
     this.fillColor = fillColor

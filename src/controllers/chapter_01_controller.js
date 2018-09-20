@@ -1,4 +1,4 @@
-import { point, vector } from "../lib/tuples"
+import { Position } from "../models"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -14,13 +14,13 @@ export default class extends Controller {
 
   reset() {
     this.world = {
-      gravity: vector(0, -0.1, 0),
-      wind: vector(-0.01, 0, 0)
+      gravity: Position.vector(0, -0.1, 0),
+      wind: Position.vector(-0.01, 0, 0)
     }
 
     this.projectile = {
-      position: point(1, 1, 0),
-      velocity: vector(1, 1, 0).normalize.multiplyBy(this.speed)
+      position: Position.point(1, 1, 0),
+      velocity: Position.vector(1, 1, 0).normalize.multiplyBy(this.speed)
     }
 
     this.positionListTarget.innerHTML = ""
