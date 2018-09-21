@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
+    "build": "webpack",
     "test": "ava",
     "test:watch": "ava --watch"
   },
@@ -18,6 +19,7 @@
     "express": "^4.16.3",
     "stimulus": "^1.1.0",
     "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^3.2.0"
   },
   "ava": {

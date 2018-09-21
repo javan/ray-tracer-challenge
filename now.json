@@ -1,0 +1,6 @@
+{
+  "type": "static",
+  "public": true,
+  "name": "ray-tracer-challenge",
+  "alias": "ray-tracer-challenge.now.sh"
+}
