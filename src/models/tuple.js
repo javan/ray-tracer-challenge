@@ -1,3 +1,5 @@
+import { dotProduct, sum } from "./math"
+
 export class Tuple extends Array {
   add(tuple) {
     const values = this.map((value, index) => value + tuple[index])
@@ -21,7 +23,7 @@ export class Tuple extends Array {
   }
 
   dotProduct(tuple) {
-    return this.map((value, index) => value * tuple[index]).reduce(sum)
+    return dotProduct(this, tuple)
   }
 
   clamp(min, max) {
@@ -46,5 +48,3 @@ export class Tuple extends Array {
     return Math.sqrt(this.map(value => value ** 2).reduce(sum))
   }
 }
-
-const sum = (result, value) => result + value
