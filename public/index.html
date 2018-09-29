@@ -30,5 +30,22 @@
       <div data-target="chapter-02.preview"></div>
     </div>
   </details>
+
+  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+    <summary>Chapter 4: Matrix Transformations</summary>
+    <div data-controller="chapter-04">
+      <label>
+        Size: <input type="number" data-target="chapter-04.sizeInput" data-action="input->chapter-04#render" step="10" value="200" style="width: 4em;">
+      </label>
+
+      <label>
+        Radius: <input type="number" data-target="chapter-04.radiusInput" data-action="input->chapter-04#render" step="5" value="75" style="width: 4em;">
+      </label>
+
+      <a href="#" data-action="chapter-04#download" download="clock.ppm">Download clock.ppm</a>
+
+      <div data-target="chapter-04.preview"></div>
+    </div>
+  </details>
 </body>
 </html>
