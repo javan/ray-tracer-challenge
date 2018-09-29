@@ -2,11 +2,74 @@ import { Tuple } from "./tuple"
 import { dotProduct } from "./math"
 
 export class Matrix extends Array {
+  static translation(x, y, z) {
+    const matrix = this.identity
+    matrix[0][3] = x
+    matrix[1][3] = y
+    matrix[2][3] = z
+    return matrix
+  }
+
+  static scaling(x, y, z) {
+    const matrix = this.identity
+    matrix[0][0] = x
+    matrix[1][1] = y
+    matrix[2][2] = z
+    return matrix
+  }
+
+  static shearing(xy, xz, yx, yz, zx, zy) {
+    const matrix = this.identity
+    matrix[0][1] = xy
+    matrix[0][2] = xz
+    matrix[1][0] = yx
+    matrix[1][2] = yz
+    matrix[2][0] = zx
+    matrix[2][1] = zy
+    return matrix
+  }
+
+  static rotationX(radians) {
+    const matrix = this.identity
+    matrix[1][1] =  Math.cos(radians)
+    matrix[1][2] = -Math.sin(radians)
+    matrix[2][1] =  Math.sin(radians)
+    matrix[2][2] =  Math.cos(radians)
+    return matrix
+  }
+
+  static rotationY(radians) {
+    const matrix = this.identity
+    matrix[0][0] =  Math.cos(radians)
+    matrix[0][2] =  Math.sin(radians)
+    matrix[2][0] = -Math.sin(radians)
+    matrix[2][2] =  Math.cos(radians)
+    return matrix
+  }
+
+  static rotationZ(radians) {
+    const matrix = this.identity
+    matrix[0][0] =  Math.cos(radians)
+    matrix[0][1] = -Math.sin(radians)
+    matrix[1][0] =  Math.sin(radians)
+    matrix[1][1] =  Math.cos(radians)
+    return matrix
+  }
+
+  static get identity() {
+    return Matrix.of(
+      [ 1, 0, 0, 0 ],
+      [ 0, 1, 0, 0 ],
+      [ 0, 0, 1, 0 ],
+      [ 0, 0, 0, 1 ],
+    )
+  }
+
   multiplyBy(object) {
     if (object instanceof Tuple) {
       const tuple = object
       const matrix = Matrix.of(...tuple.map(value => [value]))
-      return Tuple.of(...this.multiplyBy(matrix).columns[0])
+      return object.constructor.of(...this.multiplyBy(matrix).columns[0])
     } else {
       const matrix = object
       const values = this.map(row => row.map((_, index) => dotProduct(row, matrix.columns[index])))
@@ -16,11 +79,6 @@ export class Matrix extends Array {
 
   divideBy(number) {
     const values = this.map(values => values.map(value => value / number))
-    return Matrix.of(...values)
-  }
-
-  toFixed(digits) {
-    const values = this.map(values => values.map(value => Number(value.toFixed(digits))))
     return Matrix.of(...values)
   }
 
@@ -73,6 +131,11 @@ export class Matrix extends Array {
 
   get isInvertible() {
     return this.determinant != 0
+  }
+
+  get fixed() {
+    const values = this.map(values => values.map(value => Number(value.toFixed(5))))
+    return Matrix.of(...values)
   }
 }
 

@@ -73,13 +73,6 @@ test("a matrix multiplied by a tuple", t => {
   t.deepEqual(a.multiplyBy(b), Tuple.of(18, 24, 33, 1))
 })
 
-const identity = Matrix.of(
-  [ 1, 0, 0, 0 ],
-  [ 0, 1, 0, 0 ],
-  [ 0, 0, 1, 0 ],
-  [ 0, 0, 0, 1 ],
-)
-
 test("multiplying a matrix by the identity", t => {
   const a = Matrix.of(
     [ 0, 1,  2,  4 ],
@@ -87,12 +80,12 @@ test("multiplying a matrix by the identity", t => {
     [ 2, 4,  8, 16 ],
     [ 4, 8, 16, 32 ],
   )
-  t.deepEqual(a.multiplyBy(identity), a)
+  t.deepEqual(a.multiplyBy(Matrix.identity), a)
 })
 
 test("multiplying identity by a tuple", t => {
   const a = Tuple.of(1, 2, 3, 4)
-  t.deepEqual(identity.multiplyBy(a), a)
+  t.deepEqual(Matrix.identity.multiplyBy(a), a)
 })
 
 test("transposing a matrix", t => {
@@ -234,7 +227,7 @@ test("calculating the inverse of a matrix", t => {
   t.is(b[3][2], -160 / 532)
   t.is(a.cofactor(3, 2), 105)
   t.is(b[2][3], 105 / 532)
-  t.deepEqual(b.toFixed(5),
+  t.deepEqual(b.fixed,
     Matrix.of(
       [  0.21805 ,  0.45113 ,  0.24060 , -0.04511 ],
       [ -0.80827 , -1.45677 , -0.44361 ,  0.52068 ],
@@ -251,7 +244,7 @@ test("calculating the inverse of another matrix", t => {
     [ -6,  0,  9,  6 ],
     [ -3,  0, -9, -4 ],
   )
-  t.deepEqual(a.inverse.toFixed(5),
+  t.deepEqual(a.inverse.fixed,
     Matrix.of(
       [ -0.15385, -0.15385, -0.28205, -0.53846 ],
       [ -0.07692,  0.12308,  0.02564,  0.03077 ],
@@ -268,7 +261,7 @@ test("calculating the inverse of a third matrix", t => {
     [ -4,  9,  6,  4 ],
     [ -7,  6,  6,  2 ],
   )
-  t.deepEqual(a.inverse.toFixed(5),
+  t.deepEqual(a.inverse.fixed,
     Matrix.of(
       [ -0.04074, -0.07778,  0.14444, -0.22222 ],
       [ -0.07778,  0.03333,  0.36667, -0.33333 ],
@@ -293,5 +286,5 @@ test("multiplying a product by its inverse", t => {
   )
   const c = a.multiplyBy(b)
   const d = c.multiplyBy(b.inverse)
-  t.deepEqual(d.toFixed(), a)
+  t.deepEqual(d.fixed, a)
 })

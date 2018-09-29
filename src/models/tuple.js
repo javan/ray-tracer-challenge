@@ -36,6 +36,11 @@ export class Tuple extends Array {
     return new this.constructor(...values)
   }
 
+  get fixed() {
+    const values = this.map(value => Number(value.toFixed(5)))
+    return new this.constructor(...values)
+  }
+
   get negate() {
     return this.multiplyBy(-1)
   }
