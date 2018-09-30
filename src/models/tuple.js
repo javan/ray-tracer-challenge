@@ -33,7 +33,9 @@ export class Tuple extends Array {
 
   get round() {
     const values = this.map(value => Math.round(value))
-    return new this.constructor(...values)
+    const value = new this.constructor(...values)
+    Object.defineProperty(this, "round", { value })
+    return value
   }
 
   get fixed() {
@@ -42,14 +44,20 @@ export class Tuple extends Array {
   }
 
   get negate() {
-    return this.multiplyBy(-1)
+    const value = this.multiplyBy(-1)
+    Object.defineProperty(this, "negate", { value })
+    return value
   }
 
   get normalize() {
-    return this.divideBy(this.magnitude)
+    const value =  this.divideBy(this.magnitude)
+    Object.defineProperty(this, "normalize", { value })
+    return value
   }
 
   get magnitude() {
-    return Math.sqrt(this.map(value => value ** 2).reduce(sum))
+    const value = Math.sqrt(this.map(value => value ** 2).reduce(sum))
+    Object.defineProperty(this, "magnitude", { value })
+    return value
   }
 }

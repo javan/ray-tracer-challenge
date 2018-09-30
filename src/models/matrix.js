@@ -109,24 +109,30 @@ export class Matrix extends Array {
   }
 
   get transpose() {
-    return Matrix.from(this.columns)
+    const value = Matrix.from(this.columns)
+    Object.defineProperty(this, "transpose", { value })
+    return value
   }
 
   get determinant() {
-    if (this.length == 2) {
-      return this[0][0] * this[1][1] - this[0][1] * this[1][0]
-    } else {
-      return dotProduct(this[0], this[0].map((_, index) => this.cofactor(0, index)))
-    }
+    const value = this.length == 2
+      ? this[0][0] * this[1][1] - this[0][1] * this[1][0]
+      : dotProduct(this[0], this[0].map((_, index) => this.cofactor(0, index)))
+    Object.defineProperty(this, "determinant", { value })
+    return value
   }
 
   get cofactors() {
     const values = this.map((values, row) => values.map((_, column) => this.cofactor(row, column)))
-    return Matrix.from(values)
+    const value = Matrix.from(values)
+    Object.defineProperty(this, "cofactors", { value })
+    return value
   }
 
   get inverse() {
-    return this.cofactors.transpose.divideBy(this.determinant)
+    const value = this.cofactors.transpose.divideBy(this.determinant)
+    Object.defineProperty(this, "inverse", { value })
+    return value
   }
 
   get isInvertible() {
