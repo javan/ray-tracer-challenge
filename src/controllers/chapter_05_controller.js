@@ -3,7 +3,7 @@ import { createElementForCanvas, nextFrame, nextIdle } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "preview" ]
+  static targets = [ "transformInput", "preview" ]
 
   connect() {
     this.render()
@@ -29,7 +29,9 @@ export default class extends Controller {
 
   get canvas() {
     const rayOrigin = Position.point(0, 0, -5)
+
     const sphere = new Sphere
+    sphere.transform = this.transform
 
     const wallZ = 10
     const wallSize = 7.0
@@ -56,4 +58,21 @@ export default class extends Controller {
 
     return canvas
   }
+
+  get transform() {
+    return this.transforms.reduce((result, value) => result.multiplyBy(value))
+  }
+
+  get transforms() {
+    const inputs = this.transformInputTargets.filter(e => e.checked)
+    const transforms = inputs.map(e => TRANSFORMS[e.value])
+    return [Matrix.identity, ...transforms]
+  }
+}
+
+const TRANSFORMS = {
+  shrinkY: Matrix.scaling(1, 0.5, 1),
+  shrinkX: Matrix.scaling(0.5, 1, 1),
+  rotate: Matrix.rotationZ(Math.PI / 4),
+  skew: Matrix.shearing(1, 0, 0, 0, 0, 0)
 }

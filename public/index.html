@@ -51,9 +51,29 @@
   <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
     <summary>Chapter 5: Ray/Sphere Intersections</summary>
     <div data-controller="chapter-05">
-      <a href="#" data-action="chapter-05#download" download="sphere.ppm">Download sphere.ppm</a>
+      <label>
+        <input type="checkbox" value="rotate" data-target="chapter-05.transformInput" data-action="chapter-05#render">
+        Rotate
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="skew" data-target="chapter-05.transformInput" data-action="chapter-05#render">
+        Skew
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="shrinkY" data-target="chapter-05.transformInput" data-action="chapter-05#render">
+        Shrink Y
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="shrinkX" data-target="chapter-05.transformInput" data-action="chapter-05#render">
+        Shrink X
+      </label>
 
       <div data-target="chapter-05.preview"></div>
+
+      <a href="#" data-action="chapter-05#download" download="sphere.ppm">Download sphere.ppm</a>
     </div>
   </details>
 </body>
