@@ -7,7 +7,6 @@ export class Canvas {
     this.height = height
     this.fillColor = fillColor
     this.pixels = array(height, () => array(width, fillColor))
-    this.dirtyPixels = new Map
   }
 
   hasPixelAt(x, y) {
@@ -20,19 +19,10 @@ export class Canvas {
     }
   }
 
-  writePixel(x, y, value) {
+  writePixel(x, y, color) {
     if (this.hasPixelAt(x, y)) {
-      this.pixels[y][x] = value
-      const key = JSON.stringify({ x, y })
-      this.dirtyPixels.set(key, value)
+      return this.pixels[y][x] = color
     }
-  }
-
-  eachDirtyPixel(callback) {
-    this.dirtyPixels.forEach((pixel, key) => {
-      const { x, y } = JSON.parse(key)
-      callback(pixel, x, y)
-    })
   }
 
   toPPM() {

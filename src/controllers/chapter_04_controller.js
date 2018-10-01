@@ -1,5 +1,5 @@
-import { Canvas, Color, Matrix, Position } from "../models"
-import { createElementForCanvas, nextFrame, nextIdle } from "../helpers"
+import { Color, Matrix, Position } from "../models"
+import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
@@ -11,7 +11,7 @@ export default class extends Controller {
 
   async render() {
     await nextIdle()
-    const element = createElementForCanvas(this.canvas)
+    const { element } = this.canvas
 
     await nextFrame()
     this.previewTarget.innerHTML = ""
@@ -29,7 +29,7 @@ export default class extends Controller {
 
   get canvas() {
     const { size, radius } = this
-    const canvas = new Canvas(size, size)
+    const canvas = new DOMCanvasProxy(size, size)
     const color = Color.of(0, 1, 0)
     const start = Position.point(0, 1, 0)
 

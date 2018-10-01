@@ -1,20 +1,24 @@
-import { nextFrame } from "./timing_helpers"
+import { Canvas } from "../models"
 
-export function createElementForCanvas(canvas) {
-  const { width, height, fillColor } = canvas
-  const element = document.createElement("canvas")
-  const context = element.getContext("2d")
+export class DOMCanvasProxy extends Canvas {
+  constructor() {
+    super(...arguments)
 
-  element.width = width
-  element.height = height
+    this.element = document.createElement("canvas")
+    this.element.width = this.width
+    this.element.height = this.height
 
-  context.fillStyle = `rgb(${fillColor.rgb})`
-  context.fillRect(0, 0, width, height)
+    this.context = this.element.getContext("2d")
+    this.context.fillStyle = `rgb(${this.fillColor.rgb})`
+    this.context.fillRect(0, 0, this.width, this.height)
+  }
 
-  canvas.eachDirtyPixel((pixel, x, y) => {
-    const imageData = new ImageData(pixel.rgba, 1, 1)
-    context.putImageData(imageData, x, y)
-  })
-
-  return element
+  writePixel(x, y, color) {
+    const result = super.writePixel(x, y, color)
+    if (result) {
+      const imageData = new ImageData(color.rgba, 1, 1)
+      this.context.putImageData(imageData, x, y)
+    }
+    return result
+  }
 }
