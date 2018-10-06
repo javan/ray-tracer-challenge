@@ -32,4 +32,11 @@ export class Position extends Tuple {
       this.w
     )
   }
+
+  reflect(normal) {
+    if (!this.isVector || !normal.isVector)
+      throw new Error("Positions must be vectors")
+
+    return this.subtract(normal.multiplyBy(2).multiplyBy(this.dotProduct(normal)))
+  }
 }

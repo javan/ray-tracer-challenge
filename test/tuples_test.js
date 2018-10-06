@@ -161,3 +161,17 @@ test("multiplying colors", t => {
   const c2 = Color.of(0.9, 1, 0.1)
   t.deepEqual(c1.multiplyBy(c2), Color.of(0.9, 0.2, 0.03))
 })
+
+test("reflecting a vector approaching at 45°", t => {
+  const v = Position.vector(1, -1, 0)
+  const n = Position.vector(0, 1, 0)
+  const r = v.reflect(n)
+  t.deepEqual(r.fixed, Position.vector(1, 1, 0).fixed)
+})
+
+test("reflecting a vector off a slanted surface", t => {
+  const v = Position.vector(0, -1, 0)
+  const n = Position.vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0)
+  const r = v.reflect(n)
+  t.deepEqual(r.fixed, Position.vector(1, 0, 0).fixed)
+})
