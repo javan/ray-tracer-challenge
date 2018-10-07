@@ -1,5 +1,5 @@
 import test from "ava"
-import { Ray, Sphere, Position, Matrix } from "../src/models"
+import { Ray, Sphere, Position, Matrix, Material } from "../src/models"
 
 test("a ray intersects a sphere at two points", t => {
   const r = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
@@ -124,4 +124,17 @@ test("computing the normal on a scaled sphere", t => {
   s.transform = Matrix.scaling(1, 0.5, 1)
   const n = s.normalAt(Position.point(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2))
   t.deepEqual(n.fixed, Position.vector(0, 0.97014, -0.24254))
+})
+
+test("a sphere has a default material", t => {
+  const s = new Sphere
+  t.deepEqual(s.material, new Material)
+})
+
+test("a sphere may be assigned a material", t => {
+  const s = new Sphere
+  const m = new Material
+  m.abient = 1
+  s.material = m
+  t.is(s.material, m)
 })

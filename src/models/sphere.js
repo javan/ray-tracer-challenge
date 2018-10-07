@@ -1,9 +1,11 @@
 import { Matrix } from "./matrix"
 import { Position } from "./position"
+import { Material } from "./material"
 
 export class Sphere {
   constructor() {
     this.transform = Matrix.identity
+    this.material = new Material
   }
 
   normalAt(worldPoint) {
