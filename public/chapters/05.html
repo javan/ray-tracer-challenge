@@ -1,0 +1,30 @@
+<div data-controller="chapter-05">
+  <div data-action="input->chapter-05#render">
+    <fieldset>
+      <legend>Transform</legend>
+      <label>
+        <input type="checkbox" value="rotate" data-target="chapter-05.transformInput">
+        Rotate
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="skew" data-target="chapter-05.transformInput">
+        Skew
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="shrinkY" data-target="chapter-05.transformInput">
+        Shrink Y
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" value="shrinkX" data-target="chapter-05.transformInput">
+        Shrink X
+      </label>
+    </fieldset>
+  </div>
+
+  <div data-target="chapter-05.preview"></div>
+
+  <a href="#" data-action="chapter-05#download" download="sphere.ppm">Download sphere.ppm</a>
+</div>

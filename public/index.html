@@ -6,136 +6,49 @@
   <script src="bundle.js" async></script>
 </head>
 <body data-controller="chapters">
-  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+  <details
+    data-controller="chapter"
+    data-target="chapters.chapter"
+    data-action="toggle->chapter#toggle toggle->chapters#closeOthers"
+    data-chapter-number="01">
     <summary>Chapter 1: Tuples, Points, and Vectors</summary>
-    <div data-controller="chapter-01">
-      <form data-action="chapter-01#run">
-        <label>
-          Speed: <input type="number" data-target="chapter-01.speedInput" step="0.25" value="1" style="width: 4em;">
-        </label>
-        <input type="submit" value="Run">
-      </form>
-      <ol data-target="chapter-01.positionList"></ol>
-    </div>
+    <div data-target="chapter.content"></div>
   </details>
 
-  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+  <details
+    data-controller="chapter"
+    data-target="chapters.chapter"
+    data-action="toggle->chapter#toggle toggle->chapters#closeOthers"
+    data-chapter-number="02">
     <summary>Chapter 2: Drawing on a Canvas</summary>
-    <div data-controller="chapter-02">
-      <label>
-        Speed: <input type="number" data-target="chapter-02.speedInput" data-action="input->chapter-02#render" step="0.25" value="11.25" style="width: 5em;">
-      </label>
-      <a href="#" data-action="chapter-02#download" download="projectile.ppm">Download projectile.ppm</a>
-
-      <div data-target="chapter-02.preview"></div>
-    </div>
+    <div data-target="chapter.content"></div>
   </details>
 
-  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+  <details
+    data-controller="chapter"
+    data-target="chapters.chapter"
+    data-action="toggle->chapter#toggle toggle->chapters#closeOthers"
+    data-chapter-number="04">
     <summary>Chapter 4: Matrix Transformations</summary>
-    <div data-controller="chapter-04">
-      <label>
-        Size: <input type="number" data-target="chapter-04.sizeInput" data-action="input->chapter-04#render" step="10" value="200" style="width: 4em;">
-      </label>
-
-      <label>
-        Radius: <input type="number" data-target="chapter-04.radiusInput" data-action="input->chapter-04#render" step="5" value="75" style="width: 4em;">
-      </label>
-
-      <a href="#" data-action="chapter-04#download" download="clock.ppm">Download clock.ppm</a>
-
-      <div data-target="chapter-04.preview"></div>
-    </div>
+    <div data-target="chapter.content"></div>
   </details>
 
-  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+  <details
+    data-controller="chapter"
+    data-target="chapters.chapter"
+    data-action="toggle->chapter#toggle toggle->chapters#closeOthers"
+    data-chapter-number="05">
     <summary>Chapter 5: Ray/Sphere Intersections</summary>
-    <div data-controller="chapter-05">
-      <div data-action="input->chapter-05#render">
-        <fieldset>
-          <legend>Transform</legend>
-          <label>
-            <input type="checkbox" value="rotate" data-target="chapter-05.transformInput">
-            Rotate
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="skew" data-target="chapter-05.transformInput">
-            Skew
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="shrinkY" data-target="chapter-05.transformInput">
-            Shrink Y
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="shrinkX" data-target="chapter-05.transformInput">
-            Shrink X
-          </label>
-        </fieldset>
-      </div>
-
-      <div data-target="chapter-05.preview"></div>
-
-      <a href="#" data-action="chapter-05#download" download="sphere.ppm">Download sphere.ppm</a>
-    </div>
+    <div data-target="chapter.content"></div>
   </details>
 
-  <details data-target="chapters.chapter" data-action="toggle->chapters#closeOthers">
+  <details
+    data-controller="chapter"
+    data-target="chapters.chapter"
+    data-action="toggle->chapter#toggle toggle->chapters#closeOthers"
+    data-chapter-number="06">
     <summary>Chapter 6: Light and Shading</summary>
-    <div data-controller="chapter-06">
-      <div data-action="input->chapter-06#render">
-        <fieldset>
-          <legend>Material</legend>
-          <label>
-            <input type="number" data-target="chapter-06.ambientInput" step="0.1" value="0.1" style="width: 4em;">
-            Ambient
-          </label>
-          <br>
-          <label>
-            <input type="number" data-target="chapter-06.diffuseInput" step="0.1" value="0.9" style="width: 4em;">
-            Diffuse
-          </label>
-          <br>
-          <label>
-            <input type="number" data-target="chapter-06.specularInput" step="0.1" value="0.9" style="width: 4em;">
-            Specular
-          </label>
-          <br>
-          <label>
-            <input type="number" data-target="chapter-06.shininessInput" step="10" value="200" style="width: 4em;">
-            Shininess
-          </label>
-        </fieldset>
-        <fieldset>
-          <legend>Transform</legend>
-          <label>
-            <input type="checkbox" value="rotate" data-target="chapter-06.transformInput">
-            Rotate
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="skew" data-target="chapter-06.transformInput">
-            Skew
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="shrinkY" data-target="chapter-06.transformInput">
-            Shrink Y
-          </label>
-          <br>
-          <label>
-            <input type="checkbox" value="shrinkX" data-target="chapter-06.transformInput">
-            Shrink X
-          </label>
-        </fieldset>
-      </div>
-
-      <div data-target="chapter-06.preview"></div>
-
-      <a href="#" data-action="chapter-06#download" download="sphere.ppm">Download sphere.ppm</a>
-    </div>
+    <div data-target="chapter.content"></div>
   </details>
 </body>
 </html>
