@@ -36,6 +36,19 @@ ul, ol, li {
   margin-left: 1em;
 }
 
+fieldset {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.5em 0.5em 0;
+  padding: 0.3em 0.6em;
+  border: 1px solid #666;
+  border-radius: 3px;
+}
+
+legend {
+  color: #333;
+}
+
 button {
   font-size: 11px;
   padding: 2px 8px 3px 8px;
