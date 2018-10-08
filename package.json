@@ -28,7 +28,7 @@
     "babel": false,
     "cache": false,
     "files": [
-      "test/**/*_test.js"
+      "test/**/*.test.js"
     ],
     "sources": [
       "src/**/*.js"
