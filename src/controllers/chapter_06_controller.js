@@ -32,7 +32,9 @@ export default class extends Controller {
   eachPixel(callback) {
     const { transform, ambient, diffuse, specular, shininess } = this
     const message = { canvasSize: CANVAS_SIZE, color: COLOR, transform, ambient, diffuse, specular, shininess }
-    const batchSize = CANVAS_SIZE / this.workers.length
+    const batchSize = Math.floor(CANVAS_SIZE / this.workers.length)
+
+    let completedWorkerCount = 0
 
     this.workers.forEach((worker, index) => {
       const start = index * batchSize
@@ -40,9 +42,16 @@ export default class extends Controller {
       worker.postMessage({ start, end, ...message })
 
       worker.onmessage = ({ data }) => {
-        data.pixels.forEach(({ x, y, color }) => {
-          callback([ x, y, Color.from(color) ])
-        })
+        if (data.pixels) {
+          data.pixels.forEach(({ x, y, color }) => {
+            callback([ x, y, Color.from(color) ])
+          })
+        } else {
+          completedWorkerCount++
+          if (completedWorkerCount == this.workers.length) {
+            // All workers are done
+          }
+        }
       }
     })
   }

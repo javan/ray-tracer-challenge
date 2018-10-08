@@ -15,8 +15,11 @@ onmessage = ({ data }) => {
   let { start, end } = data
   function sendBatch() {
     postMessage({ pixels: getPixels(sphere, data.canvasSize, start, ++start) })
+
     if (start < end) {
-      setTimeout(sendBatch, 20)
+      setTimeout(sendBatch)
+    } else {
+      postMessage({}) // Done
     }
   }
   sendBatch()
