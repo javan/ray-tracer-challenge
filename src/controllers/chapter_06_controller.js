@@ -1,4 +1,4 @@
-import { Color, Material, Matrix, PointLight, Position, Ray, Sphere } from "../models"
+import { Canvas, Color, Material, Matrix, PointLight, Position, Ray, Sphere } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
@@ -11,15 +11,33 @@ export default class extends Controller {
 
   async render() {
     await nextIdle()
-    const { element } = this.canvas
 
+    const canvas = new DOMCanvasProxy(CANVAS_SIZE, CANVAS_SIZE)
     await nextFrame()
     this.previewTarget.innerHTML = ""
-    this.previewTarget.appendChild(element)
+    this.previewTarget.appendChild(canvas.element)
+
+    const renderBatch = async (start = 0) => {
+      for (const { x, y, color } of this.getPixels(CANVAS_SIZE, start, ++start)) {
+        canvas.writePixel(x, y, color)
+      }
+
+      if (start < CANVAS_SIZE) {
+        await nextFrame()
+        renderBatch(start)
+      }
+    }
+
+    await nextFrame()
+    renderBatch()
   }
 
   async download(event) {
-    const blob = this.canvas.toPPM().toBlob()
+    const canvas = new Canvas(150, 150)
+    for (const { x, y, color } of this.getPixels(150, 0, 150)) {
+      canvas.writePixel(x, y, color)
+    }
+    const blob = canvas.toPPM().toBlob()
     const url = URL.createObjectURL(blob)
     event.currentTarget.href = url
 
@@ -27,7 +45,7 @@ export default class extends Controller {
     URL.revokeObjectURL(url)
   }
 
-  get canvas() {
+  *getPixels(CANVAS_SIZE, start, end) {
     const sphere = new Sphere
     sphere.transform = this.transform
     sphere.material = this.material
@@ -41,15 +59,12 @@ export default class extends Controller {
     const wallZ = 10
     const wallSize = 7.0
 
-    const canvasSize = 150
-    const pixelSize = wallSize / canvasSize
+    const pixelSize = wallSize / CANVAS_SIZE
     const halfSize = wallSize / 2
 
-    const canvas = new DOMCanvasProxy(canvasSize, canvasSize)
-
-    for (let y = 0; y < canvasSize; y++) {
+    for (let y = 0; y < CANVAS_SIZE; y++) {
       const worldY = halfSize - pixelSize * y
-      for (let x = 0; x < canvasSize; x++) {
+      for (let x = start; x < end; x++) {
         const worldX = -halfSize + pixelSize * x
         const position = Position.point(worldX, worldY, wallZ)
         const ray = new Ray(rayOrigin, position.subtract(rayOrigin).normalize)
@@ -59,12 +74,10 @@ export default class extends Controller {
           const normal = sphere.normalAt(point)
           const eye = ray.direction.negate
           const color = hit.object.material.lighting(light, point, eye, normal)
-          canvas.writePixel(x, y, color)
+          yield({ x, y, color })
         }
       }
     }
-
-    return canvas
   }
 
   get transform() {
@@ -103,6 +116,8 @@ export default class extends Controller {
     return parseInt(this.shininessInputTarget.value)
   }
 }
+
+const CANVAS_SIZE = 200
 
 const TRANSFORMS = {
   shrinkY: Matrix.scaling(1, 0.5, 1),
