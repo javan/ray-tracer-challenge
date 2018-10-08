@@ -9,7 +9,7 @@ export default class extends Controller {
   static targets = [ "transformInput", "ambientInput", "diffuseInput", "specularInput", "shininessInput", "preview" ]
 
   connect() {
-    const workerCount = navigator.hardwareConcurrency || 1
+    const workerCount = navigator.hardwareConcurrency || 2
     this.workers = Array.from({ length: workerCount }, _ => new Worker("chapter_06_worker.js"))
     this.render()
   }
