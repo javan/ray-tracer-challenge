@@ -67,9 +67,8 @@ export class Matrix extends Array {
 
   multiplyBy(object) {
     if (object instanceof Tuple) {
-      const tuple = object
-      const matrix = Matrix.of(...tuple.map(value => [value]))
-      return object.constructor.of(...this.multiplyBy(matrix).columns[0])
+      const values = this.map(row => dotProduct(row, object))
+      return object.constructor.of(...values)
     } else {
       const matrix = object
       const values = this.map(row => row.map((_, index) => dotProduct(row, matrix.columns[index])))
