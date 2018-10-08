@@ -2,7 +2,8 @@ const path = require("path")
 
 module.exports = {
   entry: {
-    bundle: "./src/index.js"
+    bundle: "./src/index.js",
+    chapter_06_worker: "./src/workers/chapter_06_worker.js"
   },
 
   output: {

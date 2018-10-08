@@ -2,82 +2,58 @@ import { Canvas, Color, Material, Matrix, PointLight, Position, Ray, Sphere } fr
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
+const CANVAS_SIZE = 300
+const COLOR = Color.of(1, 0.2, 1)
+
 export default class extends Controller {
   static targets = [ "transformInput", "ambientInput", "diffuseInput", "specularInput", "shininessInput", "preview" ]
 
   connect() {
+    const workerCount = navigator.hardwareConcurrency || 1
+    this.workers = Array.from({ length: workerCount }, _ => new Worker("chapter_06_worker.js"))
     this.render()
   }
 
+  disconnect() {
+    this.workers.forEach(worker => worker.terminate())
+  }
+
   async render() {
-    await nextIdle()
-
-    const canvas = new DOMCanvasProxy(CANVAS_SIZE, CANVAS_SIZE)
     await nextFrame()
+    this.canvas = new DOMCanvasProxy(CANVAS_SIZE, CANVAS_SIZE)
+
     this.previewTarget.innerHTML = ""
-    this.previewTarget.appendChild(canvas.element)
+    this.previewTarget.appendChild(this.canvas.element)
 
-    const renderBatch = async (start = 0) => {
-      for (const { x, y, color } of this.getPixels(CANVAS_SIZE, start, ++start)) {
-        canvas.writePixel(x, y, color)
+    await nextIdle()
+    this.eachPixel(pixel => this.canvas.writePixel(...pixel))
+  }
+
+  eachPixel(callback) {
+    const { transform, ambient, diffuse, specular, shininess } = this
+    const message = { canvasSize: CANVAS_SIZE, color: COLOR, transform, ambient, diffuse, specular, shininess }
+    const batchSize = CANVAS_SIZE / this.workers.length
+
+    this.workers.forEach((worker, index) => {
+      const start = index * batchSize
+      const end = start + batchSize
+      worker.postMessage({ start, end, ...message })
+
+      worker.onmessage = ({ data }) => {
+        data.pixels.forEach(({ x, y, color }) => {
+          callback([ x, y, Color.from(color) ])
+        })
       }
-
-      if (start < CANVAS_SIZE) {
-        await nextFrame()
-        renderBatch(start)
-      }
-    }
-
-    await nextFrame()
-    renderBatch()
+    })
   }
 
   async download(event) {
-    const canvas = new Canvas(150, 150)
-    for (const { x, y, color } of this.getPixels(150, 0, 150)) {
-      canvas.writePixel(x, y, color)
-    }
-    const blob = canvas.toPPM().toBlob()
+    const blob = this.canvas.toPPM().toBlob()
     const url = URL.createObjectURL(blob)
     event.currentTarget.href = url
 
     await nextFrame()
     URL.revokeObjectURL(url)
-  }
-
-  *getPixels(CANVAS_SIZE, start, end) {
-    const sphere = new Sphere
-    sphere.transform = this.transform
-    sphere.material = this.material
-
-    const lightPosition = Position.point(-10, 10, -10)
-    const lightColor = Color.of(1, 1, 1)
-    const light = new PointLight(lightPosition, lightColor)
-
-    const rayOrigin = Position.point(0, 0, -5)
-
-    const wallZ = 10
-    const wallSize = 7.0
-
-    const pixelSize = wallSize / CANVAS_SIZE
-    const halfSize = wallSize / 2
-
-    for (let y = 0; y < CANVAS_SIZE; y++) {
-      const worldY = halfSize - pixelSize * y
-      for (let x = start; x < end; x++) {
-        const worldX = -halfSize + pixelSize * x
-        const position = Position.point(worldX, worldY, wallZ)
-        const ray = new Ray(rayOrigin, position.subtract(rayOrigin).normalize)
-        const { hit } = ray.intersect(sphere)
-        if (hit) {
-          const point = ray.position(hit.t)
-          const normal = sphere.normalAt(point)
-          const eye = ray.direction.negate
-          const color = hit.object.material.lighting(light, point, eye, normal)
-          yield({ x, y, color })
-        }
-      }
-    }
   }
 
   get transform() {
@@ -88,16 +64,6 @@ export default class extends Controller {
     const inputs = this.transformInputTargets.filter(e => e.checked)
     const transforms = inputs.map(e => TRANSFORMS[e.value])
     return [Matrix.identity, ...transforms]
-  }
-
-  get material() {
-    const material = new Material
-    material.color = Color.of(1, 0.2, 1)
-    material.ambient = this.ambient
-    material.diffuse = this.diffuse
-    material.specular = this.specular
-    material.shininess = this.shininess
-    return material
   }
 
   get ambient() {
@@ -116,8 +82,6 @@ export default class extends Controller {
     return parseInt(this.shininessInputTarget.value)
   }
 }
-
-const CANVAS_SIZE = 200
 
 const TRANSFORMS = {
   shrinkY: Matrix.scaling(1, 0.5, 1),
