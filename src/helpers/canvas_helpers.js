@@ -7,6 +7,8 @@ export class DOMCanvasProxy extends Canvas {
     this.element = document.createElement("canvas")
     this.element.width = this.width
     this.element.height = this.height
+    this.element.style.width = `${this.width / window.devicePixelRatio}px`
+    this.element.style.height = `${this.height / window.devicePixelRatio}px`
 
     this.context = this.element.getContext("2d")
     this.context.fillStyle = `rgb(${this.fillColor.rgb})`

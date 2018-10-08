@@ -2,7 +2,7 @@ import { Canvas, Color, Material, Matrix, PointLight, Position, Ray, Sphere } fr
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
-const CANVAS_SIZE = 300
+const CANVAS_SIZE = 175 * window.devicePixelRatio
 const COLOR = Color.of(1, 0.2, 1)
 
 export default class extends Controller {
