@@ -3,20 +3,23 @@ import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
 const CANVAS_SIZE = 175 * window.devicePixelRatio
+const PIXEL_COUNT = CANVAS_SIZE * CANVAS_SIZE
 const COLOR = Color.of(1, 0.2, 1)
+const WORKER_COUNT = navigator.hardwareConcurrency || 2
 
 export default class extends Controller {
-  static targets = [ "transformInput", "ambientInput", "diffuseInput", "specularInput", "shininessInput", "preview" ]
+  static targets = [ "transformInput", "ambientInput", "diffuseInput", "specularInput", "shininessInput", "preview", "stats" ]
 
   connect() {
-    const workerCount = navigator.hardwareConcurrency || 2
-    this.workers = Array.from({ length: workerCount }, _ => new Worker("chapter_06_worker.js"))
+    this.workers = Array.from({ length: WORKER_COUNT }, _ => new Worker("chapter_06_worker.js"))
     this.render()
   }
 
   disconnect() {
     this.workers.forEach(worker => worker.terminate())
   }
+
+  // Actions
 
   async render() {
     await nextFrame()
@@ -26,34 +29,12 @@ export default class extends Controller {
     this.previewTarget.appendChild(this.canvas.element)
 
     await nextIdle()
-    this.eachPixel(pixel => this.canvas.writePixel(...pixel))
-  }
-
-  eachPixel(callback) {
-    const { transform, ambient, diffuse, specular, shininess } = this
-    const message = { canvasSize: CANVAS_SIZE, color: COLOR, transform, ambient, diffuse, specular, shininess }
-    const batchSize = Math.floor(CANVAS_SIZE / this.workers.length)
-
-    let completedWorkerCount = 0
-
-    this.workers.forEach((worker, index) => {
-      const start = index * batchSize
-      const end = start + batchSize
-      worker.postMessage({ start, end, ...message })
-
-      worker.onmessage = ({ data }) => {
-        if (data.pixels) {
-          data.pixels.forEach(({ x, y, color }) => {
-            callback([ x, y, Color.from(color) ])
-          })
-        } else {
-          completedWorkerCount++
-          if (completedWorkerCount == this.workers.length) {
-            // All workers are done
-          }
-        }
-      }
-    })
+    const stats = await this.writePixels()
+    const { format } = new Intl.NumberFormat
+    this.statsTarget.innerHTML = [
+      `Rendered in ${format(stats.time)}ms using ${WORKER_COUNT} web workers.`,
+      `Hit ${format(stats.pixelWriteCount)} out of ${format(PIXEL_COUNT)} pixels.`
+    ].join("<br>")
   }
 
   async download(event) {
@@ -63,6 +44,42 @@ export default class extends Controller {
 
     await nextFrame()
     URL.revokeObjectURL(url)
+  }
+
+  // Private
+
+  writePixels() {
+    return new Promise(resolve => {
+      const startTime = performance.now()
+
+      const { transform, ambient, diffuse, specular, shininess } = this
+      const message = { canvasSize: CANVAS_SIZE, color: COLOR, transform, ambient, diffuse, specular, shininess }
+      const batchSize = Math.floor(CANVAS_SIZE / WORKER_COUNT)
+
+      let completedWorkerCount = 0
+      let pixelWriteCount = 0
+
+      this.workers.forEach((worker, index) => {
+        const start = index * batchSize
+        const end = start + batchSize
+        worker.postMessage({ start, end, ...message })
+
+        worker.onmessage = ({ data }) => {
+          if (data.pixels) {
+            data.pixels.forEach(({ x, y, color }) => {
+              this.canvas.writePixel(x, y, Color.of(...color))
+              pixelWriteCount++
+            })
+          } else {
+            completedWorkerCount++
+            if (completedWorkerCount == WORKER_COUNT) {
+              const time = performance.now() - startTime
+              resolve({ time, pixelWriteCount })
+            }
+          }
+        }
+      })
+    })
   }
 
   get transform() {
