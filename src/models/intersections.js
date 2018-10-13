@@ -1,6 +1,10 @@
 export class Intersections extends Array {
   get hit() {
-    return this.visible.sort((a, b) => a.t - b.t)[0]
+    return this.visible.sorted[0]
+  }
+
+  get sorted() {
+    return this.slice(0).sort((a, b) => a.t - b.t)
   }
 
   get visible() {
