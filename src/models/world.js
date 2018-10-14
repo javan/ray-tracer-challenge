@@ -25,4 +25,8 @@ export class World extends Array {
       result.concat(ray.intersect(object))
     , new Intersections).sorted
   }
+
+  shade(hit) {
+    return hit.object.material.lighting(this.light, hit.point, hit.eyev, hit.normalv)
+  }
 }
