@@ -1,4 +1,4 @@
-import { dotProduct, sum } from "./math"
+import { dotProduct, product, sum } from "./math"
 
 export class Tuple extends Array {
   add(tuple) {
@@ -13,8 +13,8 @@ export class Tuple extends Array {
 
   multiplyBy(object) {
     const values = object instanceof Tuple
-      ? this.map((value, index) => value * object[index])
-      : this.map(value => value * object)
+      ? this.map((value, index) => product(value, object[index]))
+      : this.map(value => product(value, object))
     return new this.constructor(...values)
   }
 
