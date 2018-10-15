@@ -10,6 +10,7 @@ export class Sphere {
   constructor({ color, ambient, diffuse, specular, shininess, transform } = {}) {
     this.material = Material.create({ color, ambient, diffuse, specular, shininess })
     this.transform = transform || Matrix.identity
+    Object.freeze(this)
   }
 
   normalAt(worldPoint) {

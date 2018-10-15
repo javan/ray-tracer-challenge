@@ -11,6 +11,7 @@ export class Material {
     this.diffuse = diffuse || 0.9
     this.specular = specular || 0.9
     this.shininess = shininess || 200
+    Object.freeze(this)
   }
 
   lighting(light, point, eyev, normalv) {
