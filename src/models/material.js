@@ -2,7 +2,7 @@ import { Color } from "./color"
 
 export class Material {
   constructor() {
-    this.color = WHITE
+    this.color = Color.WHITE
     this.ambient = 0.1
     this.diffuse = 0.9
     this.specular = 0.9
@@ -17,8 +17,8 @@ export class Material {
     let diffuse, specular
 
     if (lightDotNormal < 0) {
-      diffuse = BLACK
-      specular = BLACK
+      diffuse = Color.BLACK
+      specular = Color.BLACK
     } else {
       diffuse = effectiveColor.multiplyBy(this.diffuse).multiplyBy(lightDotNormal)
 
@@ -26,7 +26,7 @@ export class Material {
       const reflectDotEye = Math.pow(reflectv.dotProduct(eyev), this.shininess)
 
       if (reflectDotEye <= 0) {
-        specular = BLACK
+        specular = Color.BLACK
       } else {
         specular = light.intensity.multiplyBy(this.specular).multiplyBy(reflectDotEye)
       }
@@ -35,6 +35,3 @@ export class Material {
     return ambient.add(diffuse).add(specular)
   }
 }
-
-const WHITE = Color.of(1, 1, 1)
-const BLACK = Color.of(0, 0, 0)

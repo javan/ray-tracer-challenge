@@ -22,3 +22,6 @@ export class Color extends Tuple {
     return value
   }
 }
+
+Color.BLACK = Color.of(0, 0, 0)
+Color.WHITE = Color.of(1, 1, 1)

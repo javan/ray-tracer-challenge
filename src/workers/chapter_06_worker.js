@@ -27,7 +27,7 @@ onmessage = ({ data }) => {
 
 function getPixels(sphere, canvasSize, start, end) {
   const lightPosition = Position.point(-10, 10, -10)
-  const lightColor = Color.of(1, 1, 1)
+  const lightColor = Color.WHITE
   const light = new PointLight(lightPosition, lightColor)
 
   const rayOrigin = Position.point(0, 0, -5)

@@ -2,7 +2,7 @@ import { Color } from "./color"
 import { CanvasPPM } from "./canvas_ppm"
 
 export class Canvas {
-  constructor(width, height, fillColor = Color.of(0, 0, 0)) {
+  constructor(width, height, fillColor = Color.BLACK) {
     this.width = width
     this.height = height
     this.fillColor = fillColor

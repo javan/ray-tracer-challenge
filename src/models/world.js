@@ -16,7 +16,7 @@ export class World extends Array {
     s2.transform = Matrix.scaling(0.5, 0.5, 0.5)
 
     const world = World.of(s1, s2)
-    world.light = new PointLight(Position.point(-10, 10, -10), Color.of(1, 1, 1))
+    world.light = new PointLight(Position.point(-10, 10, -10), Color.WHITE)
     return world
   }
 
@@ -36,9 +36,7 @@ export class World extends Array {
       hit.prepare(ray)
       return this.shade(hit)
     } else {
-      return BLACK
+      return Color.BLACK
     }
   }
 }
-
-const BLACK = Color.of(0, 0, 0)
