@@ -1,4 +1,4 @@
-import { Color, Matrix, Position, Ray, Sphere } from "../models"
+import { Color, Matrix, Point, Vector, Ray, Sphere } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
@@ -28,7 +28,7 @@ export default class extends Controller {
   }
 
   get canvas() {
-    const rayOrigin = Position.point(0, 0, -5)
+    const rayOrigin = Point(0, 0, -5)
 
     const sphere = Sphere.create()
     sphere.transform = this.transform
@@ -47,7 +47,7 @@ export default class extends Controller {
       const worldY = halfSize - pixelSize * y
       for (let x = 0; x < canvasSize; x++) {
         const worldX = -halfSize + pixelSize * x
-        const position = Position.point(worldX, worldY, wallZ)
+        const position = Point(worldX, worldY, wallZ)
         const ray = new Ray(rayOrigin, position.subtract(rayOrigin))
         const { hit } = ray.intersect(sphere)
         if (hit) {

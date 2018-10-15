@@ -1,5 +1,5 @@
 import test from "ava"
-import { Intersection, Intersections, Sphere, Ray, Position } from "../src/models"
+import { Intersection, Intersections, Sphere, Ray, Point, Vector } from "../src/models"
 
 test("an intersection encapsulates `t` and `object`", t => {
   const s = Sphere.create()
@@ -53,17 +53,17 @@ test("the hit is always the lowest non-negative intersection", t => {
 })
 
 test("precomputing the state of an intersection", t => {
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
   const shape = Sphere.create()
   const hit = new Intersection(4, shape)
   hit.prepare(ray)
-  t.deepEqual(hit.point, Position.point(0, 0, -1))
+  t.deepEqual(hit.point, Point(0, 0, -1))
   t.deepEqual(hit.eyev, ray.direction.negate)
   t.deepEqual(hit.normalv, hit.object.normalAt(hit.point))
 })
 
 test("an intersection occurs on the outside", t => {
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
   const shape = Sphere.create()
   const hit = new Intersection(4, shape)
   hit.prepare(ray)
@@ -71,12 +71,12 @@ test("an intersection occurs on the outside", t => {
 })
 
 test("an intersection occurs on the inside", t => {
-  const ray = new Ray(Position.point(0, 0, 0), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, 0), Vector(0, 0, 1))
   const shape = Sphere.create()
   const hit = new Intersection(1, shape)
   hit.prepare(ray)
-  t.deepEqual(hit.point, Position.point(0, 0, 1))
-  t.deepEqual(hit.eyev, Position.vector(0, 0, -1))
-  t.deepEqual(hit.normalv, Position.vector(0, 0, -1))
+  t.deepEqual(hit.point, Point(0, 0, 1))
+  t.deepEqual(hit.eyev, Vector(0, 0, -1))
+  t.deepEqual(hit.normalv, Vector(0, 0, -1))
   t.is(hit.inside, true)
 })

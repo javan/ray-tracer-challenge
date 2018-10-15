@@ -1,5 +1,5 @@
 import { PointLight } from "./point_light"
-import { Position } from "./position"
+import { Point } from "./position"
 import { Color } from "./color"
 import { Matrix } from "./matrix"
 import { Sphere } from "./sphere"
@@ -17,7 +17,7 @@ export class World extends Array {
         transform: Matrix.scaling(0.5, 0.5, 0.5)
       })
     )
-    world.light = new PointLight(Position.point(-10, 10, -10), Color.WHITE)
+    world.light = new PointLight(Point(-10, 10, -10), Color.WHITE)
     return world
   }
 

@@ -1,4 +1,4 @@
-import { Color, Matrix, Position } from "../models"
+import { Color, Matrix, Point, Vector } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
@@ -31,7 +31,7 @@ export default class extends Controller {
     const { size, radius } = this
     const canvas = new DOMCanvasProxy(size, size)
     const color = Color.of(0, 1, 0)
-    const start = Position.point(0, 1, 0)
+    const start = Point(0, 1, 0)
 
     for (let hour = 1; hour <= 12; hour++) {
       const rotation = Matrix.rotationZ(hour * Math.PI / 6)

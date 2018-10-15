@@ -1,4 +1,4 @@
-import { Canvas, Color, Material, Matrix, PointLight, Position, Ray, Sphere } from "../models"
+import { Canvas, Color, Material, Matrix } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 

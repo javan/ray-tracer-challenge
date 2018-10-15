@@ -1,5 +1,5 @@
 import { Matrix } from "./matrix"
-import { Position } from "./position"
+import { Point, Vector } from "./position"
 import { Material } from "./material"
 
 export class Sphere {
@@ -14,8 +14,8 @@ export class Sphere {
 
   normalAt(worldPoint) {
     const objectPoint = this.transform.inverse.multiplyBy(worldPoint)
-    const objectNormal = objectPoint.subtract(Position.point(0, 0, 0))
+    const objectNormal = objectPoint.subtract(Point(0, 0, 0))
     const [ x, y, z ] = this.transform.inverse.transpose.multiplyBy(objectNormal)
-    return Position.vector(x, y, z).normalize
+    return Vector(x, y, z).normalize
   }
 }

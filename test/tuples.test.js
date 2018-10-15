@@ -1,5 +1,5 @@
 import test from "ava"
-import { Tuple, Position, Color } from "../src/models"
+import { Tuple, Position, Point, Vector, Color } from "../src/models"
 
 test("position with w=1.0 is a point", t => {
   const a = Position.of(4.3, -4.2, 3.1, 1.0)
@@ -22,11 +22,11 @@ test("position with w=0 is a vector", t => {
 })
 
 test("point describes positions with w=1", t => {
-  t.deepEqual(Position.point(4, -4, 3), Position.of(4, -4, 3, 1))
+  t.deepEqual(Point(4, -4, 3), Position.of(4, -4, 3, 1))
 })
 
 test("vector describes positions with w=0", t => {
-  t.deepEqual(Position.vector(4, -4, 3), Position.of(4, -4, 3, 0))
+  t.deepEqual(Vector(4, -4, 3), Position.of(4, -4, 3, 0))
 })
 
 test("adding two tuples", t => {
@@ -36,27 +36,27 @@ test("adding two tuples", t => {
 })
 
 test("subtracting two points", t => {
-  const p1 = Position.point(3, 2, 1)
-  const p2 = Position.point(5, 6, 7)
-  t.deepEqual(p1.subtract(p2), Position.vector(-2, -4, -6))
+  const p1 = Point(3, 2, 1)
+  const p2 = Point(5, 6, 7)
+  t.deepEqual(p1.subtract(p2), Vector(-2, -4, -6))
 })
 
 test("subtracting a vector from a point", t => {
-  const p = Position.point(3, 2, 1)
-  const v = Position.vector(5, 6, 7)
-  t.deepEqual(p.subtract(v), Position.point(-2, -4, -6))
+  const p = Point(3, 2, 1)
+  const v = Vector(5, 6, 7)
+  t.deepEqual(p.subtract(v), Point(-2, -4, -6))
 })
 
 test("subtracting two vectors", t => {
-  const v1 = Position.vector(3, 2, 1)
-  const v2 = Position.vector(5, 6, 7)
-  t.deepEqual(v1.subtract(v2), Position.vector(-2, -4, -6))
+  const v1 = Vector(3, 2, 1)
+  const v2 = Vector(5, 6, 7)
+  t.deepEqual(v1.subtract(v2), Vector(-2, -4, -6))
 })
 
 test("subtracting a vector from the zero vectors", t => {
-  const zero = Position.vector(0, 0, 0)
-  const v = Position.vector(1, -2, 3)
-  t.deepEqual(zero.subtract(v), Position.vector(-1, 2, -3))
+  const zero = Vector(0, 0, 0)
+  const v = Vector(1, -2, 3)
+  t.deepEqual(zero.subtract(v), Vector(-1, 2, -3))
 })
 
 test("negating a tuple", t => {
@@ -79,57 +79,57 @@ test("dividing a tuple by a scalar", t => {
   t.deepEqual(a.divideBy(2), Tuple.of(0.5, -1, 1.5, -2))
 })
 
-test("magnitude of Position.vector(1, 0, 0)", t => {
-  const v = Position.vector(1, 0, 0)
+test("magnitude of Vector(1, 0, 0)", t => {
+  const v = Vector(1, 0, 0)
   t.is(v.magnitude, 1)
 })
 
-test("magnitude of Position.vector(0, 1, 0)", t => {
-  const v = Position.vector(0, 1, 0)
+test("magnitude of Vector(0, 1, 0)", t => {
+  const v = Vector(0, 1, 0)
   t.is(v.magnitude, 1)
 })
 
-test("magnitude of Position.vector(0, 0, 1)", t => {
-  const v = Position.vector(0, 0, 1)
+test("magnitude of Vector(0, 0, 1)", t => {
+  const v = Vector(0, 0, 1)
   t.is(v.magnitude, 1)
 })
 
-test("magnitude of Position.vector(1, 2, 3)", t => {
-  const v = Position.vector(1, 2, 3)
+test("magnitude of Vector(1, 2, 3)", t => {
+  const v = Vector(1, 2, 3)
   t.is(v.magnitude, Math.sqrt(14))
 })
 
-test("magnitude of Position.vector(-1, -2, -3)", t => {
-  const v = Position.vector(-1, -2, -3)
+test("magnitude of Vector(-1, -2, -3)", t => {
+  const v = Vector(-1, -2, -3)
   t.is(v.magnitude, Math.sqrt(14))
 })
 
-test("normalizing Position.vector(4, 0, 0) gives (1, 0, 0)", t => {
-  const v = Position.vector(4, 0, 0)
-  t.deepEqual(v.normalize, Position.vector(1, 0, 0))
+test("normalizing Vector(4, 0, 0) gives (1, 0, 0)", t => {
+  const v = Vector(4, 0, 0)
+  t.deepEqual(v.normalize, Vector(1, 0, 0))
 })
 
-test("normalizing Position.vector(1, 2, 3)", t => {
-  const v = Position.vector(1, 2, 3)
-  t.deepEqual(v.normalize, Position.vector(1 / Math.sqrt(14), 2 / Math.sqrt(14), 3 / Math.sqrt(14)))
+test("normalizing Vector(1, 2, 3)", t => {
+  const v = Vector(1, 2, 3)
+  t.deepEqual(v.normalize, Vector(1 / Math.sqrt(14), 2 / Math.sqrt(14), 3 / Math.sqrt(14)))
 })
 
 test("magnitude of a normalized vector", t => {
-  const v = Position.vector(1, 2, 3)
+  const v = Vector(1, 2, 3)
   t.is(v.normalize.magnitude, 1)
 })
 
 test("dot product of two tuples", t => {
-  const a = Position.vector(1, 2, 3)
-  const b = Position.vector(2, 3, 4)
+  const a = Vector(1, 2, 3)
+  const b = Vector(2, 3, 4)
   t.is(a.dotProduct(b), 20)
 })
 
 test("cross product of two vectors", t => {
-  const a = Position.vector(1, 2, 3)
-  const b = Position.vector(2, 3, 4)
-  t.deepEqual(a.crossProduct(b), Position.vector(-1, 2, -1))
-  t.deepEqual(b.crossProduct(a), Position.vector(1, -2, 1))
+  const a = Vector(1, 2, 3)
+  const b = Vector(2, 3, 4)
+  t.deepEqual(a.crossProduct(b), Vector(-1, 2, -1))
+  t.deepEqual(b.crossProduct(a), Vector(1, -2, 1))
 })
 
 test("colors are (red, green, blue) tuples", t => {
@@ -163,15 +163,15 @@ test("multiplying colors", t => {
 })
 
 test("reflecting a vector approaching at 45°", t => {
-  const v = Position.vector(1, -1, 0)
-  const n = Position.vector(0, 1, 0)
+  const v = Vector(1, -1, 0)
+  const n = Vector(0, 1, 0)
   const r = v.reflect(n)
-  t.deepEqual(r.fixed, Position.vector(1, 1, 0).fixed)
+  t.deepEqual(r.fixed, Vector(1, 1, 0).fixed)
 })
 
 test("reflecting a vector off a slanted surface", t => {
-  const v = Position.vector(0, -1, 0)
-  const n = Position.vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0)
+  const v = Vector(0, -1, 0)
+  const n = Vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0)
   const r = v.reflect(n)
-  t.deepEqual(r.fixed, Position.vector(1, 0, 0).fixed)
+  t.deepEqual(r.fixed, Vector(1, 0, 0).fixed)
 })

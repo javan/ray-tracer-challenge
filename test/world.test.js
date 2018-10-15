@@ -1,5 +1,5 @@
 import test from "ava"
-import { World, PointLight, Position, Color, Sphere, Matrix, Ray, Intersection } from "../src/models"
+import { World, PointLight, Point, Vector, Color, Sphere, Matrix, Ray, Intersection } from "../src/models"
 
 test("creating a world", t => {
   const w = new World
@@ -8,7 +8,7 @@ test("creating a world", t => {
 })
 
 test("the default world", t => {
-  const light = new PointLight(Position.point(-10, 10, -10), Color.of(1, 1, 1))
+  const light = new PointLight(Point(-10, 10, -10), Color.of(1, 1, 1))
 
   const s1 = Sphere.create({
     color: Color.of(0.8, 1.0, 0.6),
@@ -28,7 +28,7 @@ test("the default world", t => {
 
 test("intersect a world with a ray", t => {
   const world = World.default
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
   const xs = world.intersect(ray)
   t.is(xs.length, 4)
   t.is(xs[0].t, 4)
@@ -39,7 +39,7 @@ test("intersect a world with a ray", t => {
 
 test("shading an intersection", t => {
   const world = World.default
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
   const shape = world[0]
   const hit = new Intersection(4, shape)
   hit.prepare(ray)
@@ -49,8 +49,8 @@ test("shading an intersection", t => {
 
 test("shading an intersection from the inside", t => {
   const world = World.default
-  world.light = new PointLight(Position.point(0, 0.25, 0), Color.of(1, 1, 1))
-  const ray = new Ray(Position.point(0, 0, 0), Position.vector(0, 0, 1))
+  world.light = new PointLight(Point(0, 0.25, 0), Color.of(1, 1, 1))
+  const ray = new Ray(Point(0, 0, 0), Vector(0, 0, 1))
   const shape = world[1]
   const hit = new Intersection(0.5, shape)
   hit.prepare(ray)
@@ -60,14 +60,14 @@ test("shading an intersection from the inside", t => {
 
 test("the color when a ray misses", t => {
   const world = World.default
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 1, 0))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 1, 0))
   const color = world.colorAt(ray)
   t.deepEqual(color.fixed, Color.of(0, 0, 0))
 })
 
 test("the color when a ray hits", t => {
   const world = World.default
-  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
   const color = world.colorAt(ray)
   t.deepEqual(color.fixed, Color.of(0.38066, 0.47583, 0.2855))
 })

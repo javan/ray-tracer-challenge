@@ -1,4 +1,4 @@
-import { Color, Material, Matrix, PointLight, Position, Ray, Sphere } from "../models"
+import { Color, Material, Matrix, PointLight, Point, Ray, Sphere } from "../models"
 
 onmessage = ({ data }) => {
   const sphere = Sphere.create({
@@ -24,11 +24,11 @@ onmessage = ({ data }) => {
 }
 
 function getPixels(sphere, canvasSize, start, end) {
-  const lightPosition = Position.point(-10, 10, -10)
+  const lightPosition = Point(-10, 10, -10)
   const lightColor = Color.WHITE
   const light = new PointLight(lightPosition, lightColor)
 
-  const rayOrigin = Position.point(0, 0, -5)
+  const rayOrigin = Point(0, 0, -5)
 
   const wallZ = 10
   const wallSize = 7.0
@@ -41,7 +41,7 @@ function getPixels(sphere, canvasSize, start, end) {
     const worldY = halfSize - pixelSize * y
     for (let x = start; x < end; x++) {
       const worldX = -halfSize + pixelSize * x
-      const position = Position.point(worldX, worldY, wallZ)
+      const position = Point(worldX, worldY, wallZ)
       const ray = new Ray(rayOrigin, position.subtract(rayOrigin).normalize)
       const { hit } = ray.intersect(sphere)
       if (hit) {

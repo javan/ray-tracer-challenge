@@ -1,18 +1,6 @@
 import { Tuple } from "./tuple"
 
 export class Position extends Tuple {
-  static vector(x, y, z) {
-    return Position.of(x, y, z, 0)
-  }
-
-  static point(x, y, z) {
-    return Position.of(x, y, z, 1)
-  }
-
-  constructor(x, y, z, w) {
-    super(x, y, z, w)
-  }
-
   get x() { return this[0] }
   get y() { return this[1] }
   get z() { return this[2] }
@@ -39,4 +27,12 @@ export class Position extends Tuple {
 
     return this.subtract(normal.multiplyBy(2).multiplyBy(this.dotProduct(normal)))
   }
+}
+
+export function Point(x, y, z) {
+  return Position.of(x, y, z, 1)
+}
+
+export function Vector(x, y, z) {
+  return Position.of(x, y, z, 0)
 }

@@ -1,4 +1,4 @@
-import { Color, Position } from "../models"
+import { Color, Point, Vector } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 
@@ -47,11 +47,11 @@ export default class extends Controller {
 }
 
 function *positions(speed) {
-  const gravity = Position.vector(0, -0.1, 0)
-  const wind = Position.vector(-0.01, 0, 0)
+  const gravity = Vector(0, -0.1, 0)
+  const wind = Vector(-0.01, 0, 0)
 
-  let position = Position.point(0, 1, 0)
-  let velocity = Position.vector(1, 1.8, 0).normalize.multiplyBy(speed)
+  let position = Point(0, 1, 0)
+  let velocity = Vector(1, 1.8, 0).normalize.multiplyBy(speed)
 
   while (position.y > 0) {
     yield {

@@ -1,4 +1,4 @@
-import { Position } from "./position"
+import { Point } from "./position"
 import { Intersection } from "./intersection"
 import { Intersections } from "./intersections"
 
@@ -16,7 +16,7 @@ export class Ray {
     const intersections = new Intersections
     const { origin, direction } = this.transform(sphere.transform.inverse)
 
-    const sphereToRay = origin.subtract(Position.point(0, 0, 0))
+    const sphereToRay = origin.subtract(Point(0, 0, 0))
     const a = direction.dotProduct(direction)
     const b = 2 * direction.dotProduct(sphereToRay)
     const c = sphereToRay.dotProduct(sphereToRay) - 1
