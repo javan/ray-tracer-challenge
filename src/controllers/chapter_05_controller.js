@@ -30,7 +30,7 @@ export default class extends Controller {
   get canvas() {
     const rayOrigin = Position.point(0, 0, -5)
 
-    const sphere = new Sphere
+    const sphere = Sphere.create()
     sphere.transform = this.transform
 
     const wallZ = 10

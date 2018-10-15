@@ -10,13 +10,15 @@ test("creating a world", t => {
 test("the default world", t => {
   const light = new PointLight(Position.point(-10, 10, -10), Color.of(1, 1, 1))
 
-  const s1 = new Sphere
-  s1.material.color = Color.of(0.8, 1.0, 0.6)
-  s1.material.diffuse = 0.7
-  s1.material.specular = 0.2
+  const s1 = Sphere.create({
+    color: Color.of(0.8, 1.0, 0.6),
+    diffuse: 0.7,
+    specular: 0.2
+  })
 
-  const s2 = new Sphere
-  s2.transform = Matrix.scaling(0.5, 0.5, 0.5)
+  const s2 = Sphere.create({
+    transform: Matrix.scaling(0.5, 0.5, 0.5)
+  })
 
   const w = World.default
   t.deepEqual(w.light, light)

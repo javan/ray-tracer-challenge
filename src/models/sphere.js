@@ -3,9 +3,13 @@ import { Position } from "./position"
 import { Material } from "./material"
 
 export class Sphere {
-  constructor() {
-    this.transform = Matrix.identity
-    this.material = new Material
+  static create(...args) {
+    return new Sphere(...args)
+  }
+
+  constructor({ color, ambient, diffuse, specular, shininess, transform } = {}) {
+    this.material = Material.create({ color, ambient, diffuse, specular, shininess })
+    this.transform = transform || Matrix.identity
   }
 
   normalAt(worldPoint) {

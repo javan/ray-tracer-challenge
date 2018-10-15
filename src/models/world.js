@@ -7,15 +7,16 @@ import { Intersections } from "./intersections"
 
 export class World extends Array {
   static get default() {
-    const s1 = new Sphere
-    s1.material.color = Color.of(0.8, 1.0, 0.6)
-    s1.material.diffuse = 0.7
-    s1.material.specular = 0.2
-
-    const s2 = new Sphere
-    s2.transform = Matrix.scaling(0.5, 0.5, 0.5)
-
-    const world = World.of(s1, s2)
+    const world = World.of(
+      Sphere.create({
+        color: Color.of(0.8, 1.0, 0.6),
+        diffuse: 0.7,
+        specular: 0.2
+      }),
+      Sphere.create({
+        transform: Matrix.scaling(0.5, 0.5, 0.5)
+      })
+    )
     world.light = new PointLight(Position.point(-10, 10, -10), Color.WHITE)
     return world
   }

@@ -1,16 +1,14 @@
 import { Color, Material, Matrix, PointLight, Position, Ray, Sphere } from "../models"
 
 onmessage = ({ data }) => {
-  const material = new Material
-  material.color = Color.from(data.color)
-  material.ambient = data.ambient
-  material.diffuse = data.diffuse
-  material.specular = data.specular
-  material.shininess = data.shininess
-
-  const sphere = new Sphere
-  sphere.transform = Matrix.from(data.transform)
-  sphere.material = material
+  const sphere = Sphere.create({
+    color: Color.from(data.color),
+    ambient: data.ambient,
+    diffuse: data.diffuse,
+    specular: data.specular,
+    shininess: data.shininess,
+    transform: Matrix.from(data.transform),
+  })
 
   let { start, end } = data
   function sendBatch() {

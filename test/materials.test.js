@@ -2,7 +2,7 @@ import test from "ava"
 import { Material, Color, Position, PointLight } from "../src/models"
 
 test("the default material", t => {
-  const m = new Material
+  const m = Material.create()
   t.deepEqual(m.color, Color.of(1, 1, 1))
   t.is(m.ambient, 0.1)
   t.is(m.diffuse, 0.9)
@@ -11,7 +11,7 @@ test("the default material", t => {
 })
 
 test("lighting with the eye between the light and the surface", t => {
-  const m = new Material
+  const m = Material.create()
   const position = Position.point(0, 0, 0)
 
   const eyev = Position.vector(0, 0, -1)
@@ -23,7 +23,7 @@ test("lighting with the eye between the light and the surface", t => {
 })
 
 test("lighting with the eye between light and surface, eye offset 45°", t => {
-  const m = new Material
+  const m = Material.create()
   const position = Position.point(0, 0, 0)
 
   const eyev = Position.vector(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
@@ -35,7 +35,7 @@ test("lighting with the eye between light and surface, eye offset 45°", t => {
 })
 
 test("lighting with eye opposite surface, light offset 45°", t => {
-  const m = new Material
+  const m = Material.create()
   const position = Position.point(0, 0, 0)
 
   const eyev = Position.vector(0, 0, -1)
@@ -47,7 +47,7 @@ test("lighting with eye opposite surface, light offset 45°", t => {
 })
 
 test("lighting with eye in the path of the reflection vector", t => {
-  const m = new Material
+  const m = Material.create()
   const position = Position.point(0, 0, 0)
 
   const eyev = Position.vector(0, -Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
@@ -59,7 +59,7 @@ test("lighting with eye in the path of the reflection vector", t => {
 })
 
 test("lighting with the light behind the surface", t => {
-  const m = new Material
+  const m = Material.create()
   const position = Position.point(0, 0, 0)
 
   const eyev = Position.vector(0, 0, -1)

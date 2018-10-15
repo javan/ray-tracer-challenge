@@ -1,12 +1,16 @@
 import { Color } from "./color"
 
 export class Material {
-  constructor() {
-    this.color = Color.WHITE
-    this.ambient = 0.1
-    this.diffuse = 0.9
-    this.specular = 0.9
-    this.shininess = 200
+  static create(...args) {
+    return new Material(...args)
+  }
+
+  constructor({ color, ambient, diffuse, specular, shininess } = {}) {
+    this.color = color || Color.WHITE
+    this.ambient = ambient || 0.1
+    this.diffuse = diffuse || 0.9
+    this.specular = specular || 0.9
+    this.shininess = shininess || 200
   }
 
   lighting(light, point, eyev, normalv) {
