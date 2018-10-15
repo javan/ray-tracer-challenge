@@ -8,9 +8,9 @@ import { Intersections } from "./intersections"
 export class World extends Array {
   static get default() {
     const s1 = new Sphere
-    s1.color = Color.of(0.8, 1.0, 0.6)
-    s1.diffuse = 0.7
-    s1.specular = 0.2
+    s1.material.color = Color.of(0.8, 1.0, 0.6)
+    s1.material.diffuse = 0.7
+    s1.material.specular = 0.2
 
     const s2 = new Sphere
     s2.transform = Matrix.scaling(0.5, 0.5, 0.5)
