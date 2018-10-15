@@ -55,3 +55,17 @@ test("shading an intersection from the inside", t => {
   const color = world.shade(hit)
   t.deepEqual(color.fixed, Color.of(0.90498, 0.90498, 0.90498))
 })
+
+test("the color when a ray misses", t => {
+  const world = World.default
+  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 1, 0))
+  const color = world.colorAt(ray)
+  t.deepEqual(color.fixed, Color.of(0, 0, 0))
+})
+
+test("the color when a ray hits", t => {
+  const world = World.default
+  const ray = new Ray(Position.point(0, 0, -5), Position.vector(0, 0, 1))
+  const color = world.colorAt(ray)
+  t.deepEqual(color.fixed, Color.of(0.38066, 0.47583, 0.2855))
+})

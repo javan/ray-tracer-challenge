@@ -29,4 +29,16 @@ export class World extends Array {
   shade(hit) {
     return hit.object.material.lighting(this.light, hit.point, hit.eyev, hit.normalv)
   }
+
+  colorAt(ray) {
+    const { hit } = this.intersect(ray)
+    if (hit) {
+      hit.prepare(ray)
+      return this.shade(hit)
+    } else {
+      return BLACK
+    }
+  }
 }
+
+const BLACK = Color.of(0, 0, 0)
