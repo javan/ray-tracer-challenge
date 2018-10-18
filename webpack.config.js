@@ -3,7 +3,8 @@ const path = require("path")
 module.exports = {
   entry: {
     bundle: "./src/index.js",
-    chapter_06_worker: "./src/workers/chapter_06_worker.js"
+    chapter_06_worker: "./src/workers/chapter_06_worker.js",
+    chapter_07_worker: "./src/workers/chapter_07_worker.js"
   },
 
   output: {

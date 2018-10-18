@@ -29,10 +29,19 @@ export class Camera {
     return new Ray(origin, direction)
   }
 
-  render(world, canvas = new Canvas(this.hsize, this.vsize)) {
-    for (const { x, y } of canvas) {
-      const ray = this.rayForPixel(x, y)
-      const color = world.colorAt(ray)
+  *pixelsForWorld(world, startX = 0, endX = this.hsize) {
+    for (let y = 0; y < this.vsize; y++) {
+      for (let x = startX; x < endX; x++) {
+        const ray = this.rayForPixel(x, y)
+        const color = world.colorAt(ray)
+        yield({ x, y, color })
+      }
+    }
+  }
+
+  render(world) {
+    const canvas = new Canvas(this.hsize, this.vsize)
+    for (const { x, y, color } of this.pixelsForWorld(world)) {
       canvas.writePixel(x, y, color)
     }
     return canvas
