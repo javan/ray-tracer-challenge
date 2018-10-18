@@ -56,6 +56,21 @@ export class Matrix extends Array {
     return matrix
   }
 
+  static viewTransform(from, to, up) {
+    const forward = to.subtract(from).normalize
+    const left = forward.crossProduct(up.normalize)
+    const trueUp = left.crossProduct(forward)
+    const backward = forward.negate
+    return Matrix.of(
+      [ ...left     ],
+      [ ...trueUp   ],
+      [ ...backward ],
+      [ 0, 0, 0, 1  ],
+    ).multiplyBy(
+      Matrix.translation(...from.negate)
+    )
+  }
+
   static get identity() {
     return Matrix.of(
       [ 1, 0, 0, 0 ],

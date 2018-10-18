@@ -1,5 +1,5 @@
 import test from "ava"
-import { Matrix, Tuple } from "../src/models"
+import { Matrix, Tuple, Point, Vector } from "../src/models"
 
 test("constructing and inspecting a 4x4 matrix", t => {
   const m = Matrix.of(
@@ -287,4 +287,43 @@ test("multiplying a product by its inverse", t => {
   const c = a.multiplyBy(b)
   const d = c.multiplyBy(b.inverse)
   t.deepEqual(d.fixed, a)
+})
+
+test("the transformation matrix for the default orientation", t => {
+  const from = Point(0, 0, 0)
+  const to = Point(0, 0, -1)
+  const up = Vector(0, 1, 0)
+  const transform = Matrix.viewTransform(from, to, up)
+  t.deepEqual(transform, Matrix.identity)
+})
+
+test("a view transformation matrix looking in positive z direction", t => {
+  const from = Point(0, 0, 0)
+  const to = Point(0, 0, 1)
+  const up = Vector(0, 1, 0)
+  const transform = Matrix.viewTransform(from, to, up)
+  t.deepEqual(transform, Matrix.scaling(-1, 1, -1))
+})
+
+test("the view transformation moves the world", t => {
+  const from = Point(0, 0, 8)
+  const to = Point(0, 0, 0)
+  const up = Vector(0, 1, 0)
+  const transform = Matrix.viewTransform(from, to, up)
+  t.deepEqual(transform, Matrix.translation(0, 0, -8))
+})
+
+test("an arbitrary view transformation", t => {
+  const from = Point(1, 3, 2)
+  const to = Point(4, -2, 8)
+  const up = Vector(1, 1, 0)
+  const transform = Matrix.viewTransform(from, to, up)
+  t.deepEqual(transform.fixed,
+    Matrix.of(
+      [ -0.50709, 0.50709,  0.67612, -2.36643 ],
+      [  0.76772, 0.60609,  0.12122, -2.82843 ],
+      [ -0.35857, 0.59761, -0.71714,  0.00000 ],
+      [  0.00000, 0.00000,  0.00000,  1.00000 ],
+    )
+  )
 })
