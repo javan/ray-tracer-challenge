@@ -31,12 +31,10 @@ export class Camera {
 
   render(world) {
     const canvas = new Canvas(this.hsize, this.vsize)
-    for (let y = 0; y < this.vsize; y++) {
-      for (let x = 0; x < this.hsize; x++) {
-        const ray = this.rayForPixel(x, y)
-        const color = world.colorAt(ray)
-        canvas.writePixel(x, y, color)
-      }
+    for (const { x, y } of canvas) {
+      const ray = this.rayForPixel(x, y)
+      const color = world.colorAt(ray)
+      canvas.writePixel(x, y, color)
     }
     return canvas
   }

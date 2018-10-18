@@ -42,16 +42,14 @@ export default class extends Controller {
     const canvas = new DOMCanvasProxy(canvasSize, canvasSize)
     const color = Color.of(0, 0, 1)
 
-    for (let y = 0; y < canvasSize; y++) {
+    for (const { x, y } of canvas) {
+      const worldX = -halfSize + pixelSize * x
       const worldY = halfSize - pixelSize * y
-      for (let x = 0; x < canvasSize; x++) {
-        const worldX = -halfSize + pixelSize * x
-        const position = Point(worldX, worldY, wallZ)
-        const ray = new Ray(rayOrigin, position.subtract(rayOrigin))
-        const { hit } = ray.intersect(sphere)
-        if (hit) {
-          canvas.writePixel(x, y, color)
-        }
+      const position = Point(worldX, worldY, wallZ)
+      const ray = new Ray(rayOrigin, position.subtract(rayOrigin))
+      const { hit } = ray.intersect(sphere)
+      if (hit) {
+        canvas.writePixel(x, y, color)
       }
     }
 
