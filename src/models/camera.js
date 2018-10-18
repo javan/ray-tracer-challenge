@@ -29,8 +29,7 @@ export class Camera {
     return new Ray(origin, direction)
   }
 
-  render(world) {
-    const canvas = new Canvas(this.hsize, this.vsize)
+  render(world, canvas = new Canvas(this.hsize, this.vsize)) {
     for (const { x, y } of canvas) {
       const ray = this.rayForPixel(x, y)
       const color = world.colorAt(ray)
