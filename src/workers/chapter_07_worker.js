@@ -4,11 +4,12 @@ onmessage = ({ data }) => {
   const scene = new Scene(data.hsize, data.vsize)
 
   let { startX, endX } = data
-  function sendBatch() {
+  async function sendBatch() {
+    await nextFrame()
     postMessage({ pixels: scene.getPixels(startX, ++startX) })
 
     if (startX < endX) {
-      setTimeout(sendBatch)
+      sendBatch()
     } else {
       postMessage({}) // Done
     }
@@ -114,4 +115,12 @@ class Scene {
         .multiplyBy( Matrix.scaling(0.5, 0.5, 0.5) )
     })
   }
+}
+
+async function nextFrame() {
+  return new Promise(resolve => {
+    self.requestAnimationFrame
+      ? requestAnimationFrame(resolve)
+      : setTimeout(resolve, 17)
+  })
 }
