@@ -14,7 +14,7 @@ RUN yarn
 COPY . .
 
 # Run the tests
-RUN yarn test --verbose > ./public/tests.txt
+RUN yarn test --verbose 2>&1 > ./public/tests.txt || echo "The tests failed!"
 
 # Build the app
 RUN yarn build
