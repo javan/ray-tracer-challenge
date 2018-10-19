@@ -29,7 +29,10 @@ export class World extends Array {
   }
 
   shade(hit) {
-    return hit.object.material.lighting(this.light, hit.point, hit.eyev, hit.normalv)
+    const { light } = this
+    const { object, point, eyev, normalv } = hit
+    const shadowed = this.isShadowed(point)
+    return object.material.lighting(light, point, eyev, normalv, shadowed)
   }
 
   colorAt(ray) {

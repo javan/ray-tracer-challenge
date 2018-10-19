@@ -58,6 +58,21 @@ test("shading an intersection from the inside", t => {
   t.deepEqual(color.fixed, Color.of(0.90498, 0.90498, 0.90498))
 })
 
+test("shading an intersection in shadow", t => {
+  const s1 = Sphere.create()
+  const s2 = Sphere.create({ transform: Matrix.translation(0, 0, 10) })
+
+  const world = World.of(s1, s2)
+  world.light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
+
+  const ray = new Ray(Point(0, 0, 5), Vector(0, 0, 1))
+  const hit = new Intersection(4, s2)
+  hit.prepare(ray)
+
+  const color = world.shade(hit)
+  t.deepEqual(color.fixed, Color.of(0.1, 0.1, 0.1))
+})
+
 test("the color when a ray misses", t => {
   const world = World.default
   const ray = new Ray(Point(0, 0, -5), Vector(0, 1, 0))

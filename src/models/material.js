@@ -14,11 +14,11 @@ export class Material {
     Object.freeze(this)
   }
 
-  lighting(light, point, eyev, normalv, inShadow) {
+  lighting(light, point, eyev, normalv, shadowed) {
     const effectiveColor = this.color.multiplyBy(light.intensity)
     const lightv = light.position.subtract(point).normalize
     const ambient = effectiveColor.multiplyBy(this.ambient)
-    if (inShadow) {
+    if (shadowed) {
       return ambient
     }
 

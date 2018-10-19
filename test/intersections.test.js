@@ -80,3 +80,12 @@ test("an intersection occurs on the inside", t => {
   t.deepEqual(hit.normalv, Vector(0, 0, -1))
   t.is(hit.inside, true)
 })
+
+test("the point is offset", t => {
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
+  const shape = Sphere.create()
+  const hit = new Intersection(4, shape)
+  hit.prepare(ray)
+  const { z } = hit.point
+  t.true(z > -1.1 && z < -1, `hit.point.z (${z}) is not between -1.1 and -1 (exclusive)`)
+})
