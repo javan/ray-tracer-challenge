@@ -69,3 +69,16 @@ test("lighting with the light behind the surface", t => {
   const result = m.lighting(light, position, eyev, normalv)
   t.deepEqual(result, Color.of(0.1, 0.1, 0.1))
 })
+
+test("lighting with the the surface in shadow", t => {
+  const m = Material.create()
+  const position = Point(0, 0, 0)
+
+  const eyev = Vector(0, 0, -1)
+  const normalv = Vector(0, 0, -1)
+  const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
+  const inShadow = true
+
+  const result = m.lighting(light, position, eyev, normalv, inShadow)
+  t.deepEqual(result, Color.of(0.1, 0.1, 0.1))
+})

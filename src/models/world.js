@@ -4,6 +4,7 @@ import { Color } from "./color"
 import { Matrix } from "./matrix"
 import { Sphere } from "./sphere"
 import { Intersections } from "./intersections"
+import { Ray } from "./ray"
 
 export class World extends Array {
   static get default() {
@@ -39,5 +40,16 @@ export class World extends Array {
     } else {
       return Color.BLACK
     }
+  }
+
+  isShadowed(point) {
+    const vector = this.light.position.subtract(point)
+    const distance = vector.magnitude
+    const direction = vector.normalize
+
+    const ray = new Ray(point, direction)
+    const { hit } = this.intersect(ray)
+
+    return hit ? hit.t < distance : false
   }
 }

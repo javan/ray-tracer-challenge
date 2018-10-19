@@ -71,3 +71,27 @@ test("the color when a ray hits", t => {
   const color = world.colorAt(ray)
   t.deepEqual(color.fixed, Color.of(0.38066, 0.47583, 0.2855))
 })
+
+test("there is no shadow when nothing is colinear with point and light", t => {
+  const world = World.default
+  const point = Point(0, 10, 0)
+  t.is(world.isShadowed(point), false)
+})
+
+test("shadow when an object is between the point and the light", t => {
+  const world = World.default
+  const point = Point(10, -10, 10)
+  t.is(world.isShadowed(point), true)
+})
+
+test("there is no shadow when an object is behind the light", t => {
+  const world = World.default
+  const point = Point(-20, 20, -20)
+  t.is(world.isShadowed(point), false)
+})
+
+test("there is no shadow when an object is behind the point", t => {
+  const world = World.default
+  const point = Point(-2, 2, -2)
+  t.is(world.isShadowed(point), false)
+})

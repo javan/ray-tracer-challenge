@@ -14,10 +14,14 @@ export class Material {
     Object.freeze(this)
   }
 
-  lighting(light, point, eyev, normalv) {
+  lighting(light, point, eyev, normalv, inShadow) {
     const effectiveColor = this.color.multiplyBy(light.intensity)
     const lightv = light.position.subtract(point).normalize
     const ambient = effectiveColor.multiplyBy(this.ambient)
+    if (inShadow) {
+      return ambient
+    }
+
     const lightDotNormal = lightv.dotProduct(normalv)
     let diffuse, specular
 
