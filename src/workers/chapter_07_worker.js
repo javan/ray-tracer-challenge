@@ -24,11 +24,7 @@ class Scene {
   }
 
   getPixels(startX, endX) {
-    const pixels = []
-    for (const { x, y, color } of this.camera.pixelsForWorld(this.world, startX, endX)) {
-      pixels.push({ x, y, color })
-    }
-    return pixels
+    return [...this.camera.pixelsForWorld(this.world, startX, endX)]
   }
 
   get camera() {
