@@ -5,7 +5,7 @@ import { Controller } from "stimulus"
 const HSIZE = 250 * window.devicePixelRatio
 const VSIZE = 150 * window.devicePixelRatio
 const PIXEL_COUNT = HSIZE * VSIZE
-const WORKER_COUNT = navigator.hardwareConcurrency || 2
+const WORKER_COUNT = navigator.hardwareConcurrency || 4
 
 export default class extends Controller {
   static targets = [ "preview", "stats" ]
