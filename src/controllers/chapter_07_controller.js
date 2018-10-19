@@ -32,10 +32,12 @@ export default class extends Controller {
 
     await nextFrame()
     const { format } = new Intl.NumberFormat
-    this.statsTarget.innerHTML = [
-      `Rendered in ${format(stats.time)}ms using ${WORKER_COUNT} web workers.`,
-      `Hit ${format(stats.pixelWriteCount)} out of ${format(PIXEL_COUNT)} pixels.`
-    ].join("<br>")
+    this.statsTarget.style.width = this.canvas.element.style.width
+    this.statsTarget.textContent = `
+      Rendered ${format(PIXEL_COUNT)} pixels
+      in ${format(stats.time)}ms
+      using ${WORKER_COUNT} web workers.
+    `
   }
 
   async download(event) {
@@ -52,12 +54,9 @@ export default class extends Controller {
   writePixels() {
     return new Promise(resolve => {
       const startTime = performance.now()
-
       const message = { hsize: HSIZE, vsize: VSIZE }
       const batchSize = Math.floor(HSIZE / WORKER_COUNT)
-
       let completedWorkerCount = 0
-      let pixelWriteCount = 0
 
       this.workers.forEach((worker, index) => {
         const startX = index * batchSize
@@ -68,13 +67,12 @@ export default class extends Controller {
           if (data.pixels) {
             data.pixels.forEach(({ x, y, color }) => {
               this.canvas.writePixel(x, y, Color.of(...color))
-              pixelWriteCount++
             })
           } else {
             completedWorkerCount++
             if (completedWorkerCount == WORKER_COUNT) {
               const time = performance.now() - startTime
-              resolve({ time, pixelWriteCount })
+              resolve({ time })
             }
           }
         }
