@@ -1,22 +1,28 @@
-import { Matrix } from "./matrix"
-import { Point, Vector } from "./position"
-import { Material } from "./material"
+import { Shape } from "./shape"
+import { Point } from "./position"
+import { Intersection } from "./intersection"
+import { Intersections } from "./intersections"
 
-export class Sphere {
-  static create(...args) {
-    return new Sphere(...args)
-  }
+export class Sphere extends Shape {
+  intersect(ray) {
+    const intersections = new Intersections
 
-  constructor({ color, ambient, diffuse, specular, shininess, transform } = {}) {
-    this.material = Material.create({ color, ambient, diffuse, specular, shininess })
-    this.transform = transform || Matrix.identity
-    Object.freeze(this)
-  }
+    const vectorToRay = ray.origin.subtract(Point(0, 0, 0))
+    const a = ray.direction.dotProduct(ray.direction)
+    const b = 2 * ray.direction.dotProduct(vectorToRay)
+    const c = vectorToRay.dotProduct(vectorToRay) - 1
+    const discriminant = b * b - 4 * a * c
 
-  normalAt(worldPoint) {
-    const objectPoint = this.transform.inverse.multiplyBy(worldPoint)
-    const objectNormal = objectPoint.subtract(Point(0, 0, 0))
-    const [ x, y, z ] = this.transform.inverse.transpose.multiplyBy(objectNormal)
-    return Vector(x, y, z).normalize
+    if (discriminant >= 0) {
+      const t1 = (-b - Math.sqrt(discriminant)) / (2 * a)
+      const t2 = (-b + Math.sqrt(discriminant)) / (2 * a)
+      const i1 = new Intersection(t1, this)
+      const i2 = new Intersection(t2, this)
+      t1 > t2
+        ? intersections.push(i2, i1)
+        : intersections.push(i1, i2)
+    }
+
+    return intersections
   }
 }
