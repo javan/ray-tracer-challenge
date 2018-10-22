@@ -6,6 +6,7 @@ module.exports = {
     chapter_06_worker: "./src/workers/chapter_06_worker.js",
     chapter_07_worker: "./src/workers/chapter_07_worker.js",
     chapter_08_worker: "./src/workers/chapter_08_worker.js",
+    chapter_09_worker: "./src/workers/chapter_09_worker.js",
   },
 
   output: {
