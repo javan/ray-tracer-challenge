@@ -1,3 +1,5 @@
+export const EPSILON = 0.000001
+
 export class Intersection {
   constructor(t, object) {
     this.t = t
@@ -17,6 +19,6 @@ export class Intersection {
     }
 
     // Offset point to prevent self-shadowing “acne”
-    this.point = this.point.add(this.normalv.multiplyBy(0.000001))
+    this.point = this.point.add(this.normalv.multiplyBy(EPSILON))
   }
 }

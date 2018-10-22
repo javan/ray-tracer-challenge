@@ -1,6 +1,6 @@
 import { Shape } from "./shape"
 import { Vector } from "./position"
-import { Intersection } from "./intersection"
+import { Intersection, EPSILON } from "./intersection"
 import { Intersections } from "./intersections"
 
 export class Plane extends Shape {
@@ -10,7 +10,7 @@ export class Plane extends Shape {
 
   intersect(ray) {
     const intersections = new Intersections
-    if (Math.abs(ray.direction.y) >= 0.0001) {
+    if (Math.abs(ray.direction.y) >= EPSILON) {
       const t = ray.origin.negate.y / ray.direction.y
       intersections.push(new Intersection(t, this))
     }
