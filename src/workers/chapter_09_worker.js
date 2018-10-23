@@ -51,7 +51,8 @@ class Scene {
 
   get floor() {
     return Plane.create({
-      color: Color.of(1, 0.9, 0.9)
+      color: Color.of(1, 0.9, 0.9),
+      shininess: 1
     })
   }
 
