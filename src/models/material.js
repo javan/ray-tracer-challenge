@@ -32,12 +32,12 @@ export class Material {
       diffuse = effectiveColor.multiplyBy(this.diffuse).multiplyBy(lightDotNormal)
 
       const reflectv = lightv.negate.reflect(normalv)
-      const reflectDotEye = Math.pow(reflectv.dotProduct(eyev), this.shininess)
+      const reflectvDotEyev = reflectv.dotProduct(eyev)
 
-      if (reflectDotEye <= 0) {
+      if (reflectvDotEyev <= 0) {
         specular = Color.BLACK
       } else {
-        specular = light.intensity.multiplyBy(this.specular).multiplyBy(reflectDotEye)
+        specular = light.intensity.multiplyBy(this.specular).multiplyBy(reflectvDotEyev ** this.shininess)
       }
     }
 
