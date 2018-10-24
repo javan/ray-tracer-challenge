@@ -1,6 +1,7 @@
+import { Controller } from "stimulus"
 import { Canvas, Color, Material, Matrix } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
-import { Controller } from "stimulus"
+import Worker from "./chapter_06_worker"
 
 const CANVAS_SIZE = 175 * window.devicePixelRatio
 const PIXEL_COUNT = CANVAS_SIZE * CANVAS_SIZE
@@ -11,7 +12,7 @@ export default class extends Controller {
   static targets = [ "transformInput", "ambientInput", "diffuseInput", "specularInput", "shininessInput", "preview", "stats" ]
 
   connect() {
-    this.workers = Array.from({ length: WORKER_COUNT }, _ => new Worker("chapter_06_worker.js"))
+    this.workers = Array.from({ length: WORKER_COUNT }, _ => new Worker)
     this.render()
   }
 

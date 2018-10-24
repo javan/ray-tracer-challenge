@@ -1,6 +1,7 @@
+import { Controller } from "stimulus"
 import { Color } from "../models"
 import { nextFrame, DOMCanvasProxy } from "../helpers"
-import { Controller } from "stimulus"
+import Worker from "./chapter_08_worker"
 
 const HSIZE = 240 * window.devicePixelRatio
 const VSIZE = 160 * window.devicePixelRatio
@@ -11,7 +12,7 @@ export default class extends Controller {
   static targets = [ "preview", "stats" ]
 
   connect() {
-    this.workers = Array.from({ length: WORKER_COUNT }, _ => new Worker("chapter_08_worker.js"))
+    this.workers = Array.from({ length: WORKER_COUNT }, _ => new Worker)
     this.render()
   }
 
