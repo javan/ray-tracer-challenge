@@ -1,10 +1,10 @@
 import { Color } from "../models"
-import { nextFrame, DOMCanvasProxy } from "../helpers"
+import { nextFrame, createCanvasElement } from "../helpers"
 import { Controller } from "stimulus"
 
-const HSIZE = 240 * window.devicePixelRatio
-const VSIZE = 160 * window.devicePixelRatio
-const PIXEL_COUNT = HSIZE * VSIZE
+const WIDTH  = 240 * window.devicePixelRatio
+const HEIGHT = 160 * window.devicePixelRatio
+const PIXEL_COUNT = WIDTH * HEIGHT
 const WORKER_COUNT = navigator.hardwareConcurrency || 4
 
 export default class extends Controller {
@@ -22,17 +22,18 @@ export default class extends Controller {
   // Actions
 
   async render() {
-    await nextFrame()
-    this.canvas = new DOMCanvasProxy(HSIZE, VSIZE)
-    this.previewTarget.innerHTML = ""
-    this.previewTarget.appendChild(this.canvas.element)
+    const element = createCanvasElement(WIDTH, HEIGHT)
 
     await nextFrame()
-    const stats = await this.writePixels()
+    this.previewTarget.innerHTML = ""
+    this.previewTarget.appendChild(element)
+
+    await nextFrame()
+    const stats = await this.writePixels(element)
 
     await nextFrame()
     const { format } = new Intl.NumberFormat
-    this.statsTarget.style.width = this.canvas.element.style.width
+    this.statsTarget.style.width = element.style.width
     this.statsTarget.textContent = `
       Rendered ${format(PIXEL_COUNT)} pixels
       in ${format(stats.time)}ms
@@ -40,34 +41,26 @@ export default class extends Controller {
     `
   }
 
-  async download(event) {
-    const blob = this.canvas.toPPM().toBlob()
-    const url = URL.createObjectURL(blob)
-    event.currentTarget.href = url
-
-    await nextFrame()
-    URL.revokeObjectURL(url)
-  }
-
   // Private
 
-  writePixels() {
+  writePixels(canvas) {
     return new Promise(resolve => {
       const startTime = performance.now()
-      const message = { hsize: HSIZE, vsize: VSIZE }
-      const batchSize = Math.floor(HSIZE / WORKER_COUNT)
+      const context = canvas.getContext("2d")
+      const batchSize = Math.floor(WIDTH / WORKER_COUNT)
       let completedWorkerCount = 0
 
       this.workers.forEach((worker, index) => {
         const startX = index * batchSize
         const endX = startX + batchSize
-        worker.postMessage({ startX, endX, ...message })
+        worker.postMessage({ startX, endX, width: WIDTH, height: HEIGHT })
 
-        worker.onmessage = ({ data }) => {
-          if (data.pixels) {
-            data.pixels.forEach(({ x, y, color }) => {
-              this.canvas.writePixel(x, y, Color.of(...color))
-            })
+        worker.onmessage = async ({ data }) => {
+          if (data.colors) {
+            const colors = new Uint8ClampedArray(data.colors)
+            const imageData = new ImageData(colors, data.width, HEIGHT)
+            await nextFrame()
+            context.putImageData(imageData, data.x, 0)
           } else {
             completedWorkerCount++
             if (completedWorkerCount == WORKER_COUNT) {

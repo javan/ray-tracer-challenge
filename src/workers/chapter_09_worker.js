@@ -1,12 +1,16 @@
 import { Camera, Color, Matrix, Plane, Point, PointLight, Sphere, Vector, World } from "../models"
 
 onmessage = ({ data }) => {
-  const scene = new Scene(data.hsize, data.vsize)
-
+  const scene = new Scene(data.width, data.height)
   let { startX, endX } = data
-  async function sendBatch() {
-    await nextFrame()
-    postMessage({ pixels: scene.getPixels(startX, ++startX) })
+
+  function sendBatch() {
+    const x = startX
+    const width = Math.min(x + 10, endX) - x
+    startX += width
+
+    const colors = scene.getColorData(x, width).buffer
+    postMessage({ x, width, colors }, [ colors ])
 
     if (startX < endX) {
       sendBatch()
@@ -18,19 +22,32 @@ onmessage = ({ data }) => {
 }
 
 class Scene {
-  constructor(hsize, vsize) {
-    this.hsize = hsize
-    this.vsize = vsize
+  constructor(width, height) {
+    this.width = width
+    this.height = height
   }
 
-  getPixels(startX, endX) {
-    return [...this.camera.pixelsForWorld(this.world, startX, endX)]
+  *getColors(x, width) {
+    for (const pixel of this.camera.pixelsForWorld(this.world, x, x + width)) {
+      yield pixel.color
+    }
+  }
+
+  getColorData(x, width) {
+    const { data } = new ImageData(width, this.height)
+    let index = 0
+    for (const color of this.getColors(x, width)) {
+      for (const value of color.rgba) {
+        data[index++] = value
+      }
+    }
+    return data
   }
 
   get camera() {
     return Camera.create({
-      hsize: this.hsize,
-      vsize: this.vsize,
+      hsize: this.width,
+      vsize: this.height,
       view: Math.PI / 3,
       transform: Matrix.viewTransform(
         Point(0, 1, -5),
@@ -63,12 +80,4 @@ class Scene {
       transform: Matrix.translation(-0.5, 1, 0.5)
     })
   }
-}
-
-async function nextFrame() {
-  return new Promise(resolve => {
-    self.requestAnimationFrame
-      ? requestAnimationFrame(resolve)
-      : setTimeout(resolve, 17)
-  })
 }

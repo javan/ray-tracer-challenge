@@ -1,18 +1,12 @@
-import { Canvas } from "../models"
+import { Canvas, Color } from "../models"
+
+const DPR = window.devicePixelRatio
 
 export class DOMCanvasProxy extends Canvas {
   constructor() {
     super(...arguments)
-
-    this.element = document.createElement("canvas")
-    this.element.width = this.width
-    this.element.height = this.height
-    this.element.style.width = `${this.width / window.devicePixelRatio}px`
-    this.element.style.height = `${this.height / window.devicePixelRatio}px`
-
+    this.element = createCanvasElement(this.width, this.height, this.fillColor)
     this.context = this.element.getContext("2d")
-    this.context.fillStyle = `rgb(${this.fillColor.rgb})`
-    this.context.fillRect(0, 0, this.width, this.height)
   }
 
   writePixel(x, y, color) {
@@ -23,4 +17,19 @@ export class DOMCanvasProxy extends Canvas {
     }
     return result
   }
+}
+
+export function createCanvasElement(width, height, fillColor = Color.BLACK) {
+  const element = document.createElement("canvas")
+  const context = element.getContext("2d")
+
+  element.width = width
+  element.height = height
+  element.style.width = `${width / DPR}px`
+  element.style.height = `${height / DPR}px`
+
+  context.fillStyle = `rgb(${fillColor.rgb})`
+  context.fillRect(0, 0, width, height)
+
+  return element
 }
