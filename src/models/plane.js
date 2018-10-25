@@ -4,7 +4,7 @@ import { Intersection, EPSILON } from "./intersection"
 import { Intersections } from "./intersections"
 
 export class Plane extends Shape {
-  normalAt() {
+  localNormalAt() {
     return Vector(0, 1, 0)
   }
 

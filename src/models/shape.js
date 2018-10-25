@@ -13,11 +13,15 @@ export class Shape {
     Object.freeze(this)
   }
 
-  normalAt(worldPoint) {
-    const objectPoint = this.transform.inverse.multiplyBy(worldPoint)
-    const objectNormal = objectPoint.subtract(Point(0, 0, 0))
-    const [ x, y, z ] = this.transform.inverse.transpose.multiplyBy(objectNormal)
-    return Vector(x, y, z).normalize
+  normalAt(point) {
+    const localPoint  = this.transform.inverse.multiplyBy(point)
+    const localNormal = this.localNormalAt(localPoint)
+    const worldNormal = this.transform.inverse.transpose.multiplyBy(localNormal)
+    return Vector(...worldNormal).normalize
+  }
+
+  localNormalAt(point) {
+    return Vector(...point)
   }
 
   intersect(ray) {

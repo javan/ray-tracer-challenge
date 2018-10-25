@@ -4,6 +4,10 @@ import { Intersection } from "./intersection"
 import { Intersections } from "./intersections"
 
 export class Sphere extends Shape {
+  localNormalAt(point) {
+    return point.subtract(Point(0, 0, 0))
+  }
+
   intersect(ray) {
     const intersections = new Intersections
 
