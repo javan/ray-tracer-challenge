@@ -1,5 +1,5 @@
 import test from "ava"
-import { Material, Color, Point, Vector, PointLight } from "../src/models"
+import { Material, Color, Point, Vector, PointLight, StripePattern } from "../src/models"
 
 test("the default material", t => {
   const m = Material.create()
@@ -81,4 +81,20 @@ test("lighting with the the surface in shadow", t => {
 
   const result = m.lighting(light, position, eyev, normalv, inShadow)
   t.deepEqual(result, Color.of(0.1, 0.1, 0.1))
+})
+
+test("lighting with a pattern applied", t => {
+  const pattern = StripePattern.of(Color.WHITE, Color.BLACK)
+  const m = Material.create({ pattern, ambient: 1, diffuse: 0, specular: 0 })
+
+  const eyev = Vector(0, 0, -1)
+  const normalv = Vector(0, 0, -1)
+  const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
+  const inShadow = false
+
+  const c1 = m.lighting(light, Point(0.9, 0, 0), eyev, normalv, inShadow)
+  const c2 = m.lighting(light, Point(1.1, 0, 0), eyev, normalv, inShadow)
+
+  t.deepEqual(c1, Color.WHITE)
+  t.deepEqual(c2, Color.BLACK)
 })

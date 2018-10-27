@@ -7,8 +7,8 @@ export class Shape {
     return new this(...args)
   }
 
-  constructor({ color, ambient, diffuse, specular, shininess, transform } = {}) {
-    this.material = Material.create({ color, ambient, diffuse, specular, shininess })
+  constructor({ color, ambient, diffuse, specular, shininess, pattern, transform } = {}) {
+    this.material = Material.create({ color, ambient, diffuse, specular, shininess, pattern })
     this.transform = transform || Matrix.identity
     Object.freeze(this)
   }

@@ -5,17 +5,19 @@ export class Material {
     return new Material(...args)
   }
 
-  constructor({ color, ambient, diffuse, specular, shininess } = {}) {
-    this.color = color || Color.WHITE
-    this.ambient = ambient || 0.1
-    this.diffuse = diffuse || 0.9
-    this.specular = specular || 0.9
-    this.shininess = shininess || 200
+  constructor({ color, ambient, diffuse, specular, shininess, pattern } = {}) {
+    this.color     = color || Color.WHITE
+    this.ambient   = typeof ambient   == "number" ? ambient   : 0.1
+    this.diffuse   = typeof diffuse   == "number" ? diffuse   : 0.9
+    this.specular  = typeof specular  == "number" ? specular  : 0.9
+    this.shininess = typeof shininess == "number" ? shininess : 200
+    this.pattern   = pattern
     Object.freeze(this)
   }
 
   lighting(light, point, eyev, normalv, shadowed) {
-    const effectiveColor = this.color.multiplyBy(light.intensity)
+    const color = this.pattern ? this.pattern.colorAt(point) : this.color
+    const effectiveColor = color.multiplyBy(light.intensity)
     const lightv = light.position.subtract(point).normalize
     const ambient = effectiveColor.multiplyBy(this.ambient)
     if (shadowed) {
