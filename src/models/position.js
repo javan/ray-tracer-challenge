@@ -10,10 +10,7 @@ export class Position extends Tuple {
   get isVector() { return this.w == 0 }
 
   crossProduct(position) {
-    if (!this.isVector || !position.isVector)
-      throw new Error("Positions must be vectors")
-
-    return new this.constructor(
+    return this.constructor.of(
       this.y * position.z - this.z * position.y,
       this.z * position.x - this.x * position.z,
       this.x * position.y - this.y * position.x,
@@ -22,9 +19,6 @@ export class Position extends Tuple {
   }
 
   reflect(normal) {
-    if (!this.isVector || !normal.isVector)
-      throw new Error("Positions must be vectors")
-
     return this.subtract(normal.multiplyBy(2).multiplyBy(this.dotProduct(normal)))
   }
 }

@@ -113,7 +113,7 @@ export class Matrix extends Array {
   }
 
   get clone() {
-    return Matrix.from(this.map(values => Array.from(values)))
+    return Matrix.of(...this.map(values => [...values]))
   }
 
   get columns() {
@@ -123,7 +123,7 @@ export class Matrix extends Array {
   }
 
   get transpose() {
-    const value = Matrix.from(this.columns)
+    const value = Matrix.of(...this.columns)
     Object.defineProperty(this, "transpose", { value })
     return value
   }
@@ -138,7 +138,7 @@ export class Matrix extends Array {
 
   get cofactors() {
     const values = this.map((values, row) => values.map((_, column) => this.cofactor(row, column)))
-    const value = Matrix.from(values)
+    const value = Matrix.of(...values)
     Object.defineProperty(this, "cofactors", { value })
     return value
   }
