@@ -9,7 +9,7 @@ export class Shape {
 
   constructor({ color, ambient, diffuse, specular, shininess, pattern, transform } = {}) {
     this.material = Material.create({ color, ambient, diffuse, specular, shininess, pattern })
-    this.transform = transform || Matrix.identity
+    this.transform = transform || Matrix.IDENTITY
     Object.freeze(this)
   }
 

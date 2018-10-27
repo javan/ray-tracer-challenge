@@ -12,7 +12,7 @@ export class Camera {
     this.hsize = hsize
     this.vsize = vsize
     this.view = view
-    this.transform = transform || Matrix.identity
+    this.transform = transform || Matrix.IDENTITY
   }
 
   rayForPixel(x, y) {
