@@ -19,7 +19,7 @@ export class World extends Array {
       })
     )
     world.light = new PointLight(Point(-10, 10, -10), Color.WHITE)
-    return Object.seal(world)
+    return world
   }
 
   intersect(ray) {

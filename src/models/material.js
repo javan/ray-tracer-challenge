@@ -12,7 +12,6 @@ export class Material {
     this.specular  = typeof specular  == "number" ? specular  : 0.9
     this.shininess = typeof shininess == "number" ? shininess : 200
     this.pattern   = pattern
-    Object.freeze(this)
   }
 
   lighting({ object, light, point, eyev, normalv, shadowed }) {
