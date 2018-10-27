@@ -12,74 +12,74 @@ test("the default material", t => {
 
 test("lighting with the eye between the light and the surface", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, 0, -1)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
 
-  const result = m.lighting(light, position, eyev, normalv)
+  const result = m.lighting({ light, point, eyev, normalv })
   t.deepEqual(result.fixed, Color.of(1.9, 1.9, 1.9))
 })
 
 test("lighting with the eye between light and surface, eye offset 45°", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
 
-  const result = m.lighting(light, position, eyev, normalv)
+  const result = m.lighting({ light, point, eyev, normalv })
   t.deepEqual(result.fixed, Color.of(1.0, 1.0, 1.0))
 })
 
 test("lighting with eye opposite surface, light offset 45°", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, 0, -1)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 10, -10), Color.of(1, 1, 1))
 
-  const result = m.lighting(light, position, eyev, normalv)
+  const result = m.lighting({ light, point, eyev, normalv })
   t.deepEqual(result.fixed, Color.of(0.7364, 0.7364, 0.7364))
 })
 
 test("lighting with eye in the path of the reflection vector", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, -Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 10, -10), Color.of(1, 1, 1))
 
-  const result = m.lighting(light, position, eyev, normalv)
+  const result = m.lighting({ light, point, eyev, normalv })
   t.deepEqual(result.fixed, Color.of(1.6364, 1.6364, 1.6364))
 })
 
 test("lighting with the light behind the surface", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, 0, -1)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, 10), Color.of(1, 1, 1))
 
-  const result = m.lighting(light, position, eyev, normalv)
+  const result = m.lighting({ light, point, eyev, normalv })
   t.deepEqual(result, Color.of(0.1, 0.1, 0.1))
 })
 
 test("lighting with the the surface in shadow", t => {
   const m = Material.create()
-  const position = Point(0, 0, 0)
+  const point = Point(0, 0, 0)
 
   const eyev = Vector(0, 0, -1)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
-  const inShadow = true
+  const shadowed = true
 
-  const result = m.lighting(light, position, eyev, normalv, inShadow)
+  const result = m.lighting({ light, point, eyev, normalv, shadowed })
   t.deepEqual(result, Color.of(0.1, 0.1, 0.1))
 })
 
@@ -90,10 +90,10 @@ test("lighting with a pattern applied", t => {
   const eyev = Vector(0, 0, -1)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
-  const inShadow = false
+  const shadowed = false
 
-  const c1 = m.lighting(light, Point(0.9, 0, 0), eyev, normalv, inShadow)
-  const c2 = m.lighting(light, Point(1.1, 0, 0), eyev, normalv, inShadow)
+  const c1 = m.lighting({ point: Point(0.9, 0, 0), light, eyev, normalv, shadowed })
+  const c2 = m.lighting({ point: Point(1.1, 0, 0), light, eyev, normalv, shadowed })
 
   t.deepEqual(c1, Color.WHITE)
   t.deepEqual(c2, Color.BLACK)

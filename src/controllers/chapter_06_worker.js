@@ -46,9 +46,9 @@ function getPixels(sphere, canvasSize, start, end) {
       const { hit } = ray.intersect(sphere)
       if (hit) {
         const point = ray.position(hit.t)
-        const normal = sphere.normalAt(point)
-        const eye = ray.direction.negate
-        const color = hit.object.material.lighting(light, point, eye, normal)
+        const normalv = sphere.normalAt(point)
+        const eyev = ray.direction.negate
+        const color = hit.object.material.lighting({ light, point, eyev, normalv })
         pixels.push({ x, y, color })
       }
     }

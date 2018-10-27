@@ -1,5 +1,5 @@
 import test from "ava"
-import { StripePattern, Color, Point } from "../src/models"
+import { StripePattern, Color, Point, Sphere, Matrix } from "../src/models"
 
 const { WHITE, BLACK } = Color
 
@@ -31,4 +31,27 @@ test("a stripe pattern alternates in x", t => {
   t.is(pattern.colorAt(Point(-0.1, 0, 0)), BLACK)
   t.is(pattern.colorAt(Point(-1, 0, 0)), BLACK)
   t.is(pattern.colorAt(Point(-1.1, 0, 0)), WHITE)
+})
+
+test("stripes with an object transformation", t => {
+  const pattern = StripePattern.of(BLACK, WHITE)
+  const object = Sphere.create({ transform: Matrix.scaling(2, 2, 2) })
+  const color = pattern.colorAt(Point(1.5, 0, 0), object)
+  t.is(color, BLACK)
+})
+
+test("stripes with a pattern transformation", t => {
+  const pattern = StripePattern.of(BLACK, WHITE)
+  pattern.transform = Matrix.scaling(2, 2, 2)
+  const object = Sphere.create()
+  const color = pattern.colorAt(Point(1.5, 0, 0), object)
+  t.is(color, BLACK)
+})
+
+test("stripes with both an object and a pattern transformation", t => {
+  const pattern = StripePattern.of(BLACK, WHITE)
+  pattern.transform = Matrix.translation(0.5, 0, 0)
+  const object = Sphere.create({ transform: Matrix.scaling(2, 2, 2) })
+  const color = pattern.colorAt(Point(2.5, 0, 0), object)
+  t.is(color, BLACK)
 })
