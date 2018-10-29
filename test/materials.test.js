@@ -1,5 +1,5 @@
 import test from "ava"
-import { Material, Color, Point, Vector, PointLight, StripePattern } from "../src/models"
+import { Material, Color, Point, Vector, PointLight, Stripe } from "../src/models"
 
 test("the default material", t => {
   const m = Material.create()
@@ -84,7 +84,7 @@ test("lighting with the the surface in shadow", t => {
 })
 
 test("lighting with a pattern applied", t => {
-  const pattern = StripePattern.of(Color.WHITE, Color.BLACK)
+  const pattern = Stripe.of(Color.WHITE, Color.BLACK)
   const m = Material.create({ pattern, ambient: 1, diffuse: 0, specular: 0 })
 
   const eyev = Vector(0, 0, -1)

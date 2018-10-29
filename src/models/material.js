@@ -15,7 +15,7 @@ export class Material {
   }
 
   lighting({ object, light, point, eyev, normalv, shadowed }) {
-    const color = this.pattern ? this.pattern.colorAt(point, object) : this.color
+    const color = this.pattern ? this.pattern.colorAtShape(object, point) : this.color
     const effectiveColor = color.multiplyBy(light.intensity)
     const lightv = light.position.subtract(point).normalize
     const ambient = effectiveColor.multiplyBy(this.ambient)
