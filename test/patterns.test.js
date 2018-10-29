@@ -1,5 +1,5 @@
 import test from "ava"
-import { Pattern, Stripe, Gradient, Color, Point, Sphere, Matrix } from "../src/models"
+import { Pattern, Stripe, Gradient, Ring, Color, Point, Sphere, Matrix } from "../src/models"
 
 const { WHITE, BLACK } = Color
 
@@ -73,4 +73,13 @@ test("a gradient pattern linearly interpolates between colors", t => {
   t.deepEqual(pattern.colorAt(Point(0.25, 0, 0)), Color.of(0.25, 0.25, 0.25))
   t.deepEqual(pattern.colorAt(Point(0.5, 0, 0)), Color.of(0.5, 0.5, 0.5))
   t.deepEqual(pattern.colorAt(Point(0.75, 0, 0)), Color.of(0.75, 0.75, 0.75))
+})
+
+test("a ring pattern extends in both x and z", t => {
+  const pattern = Ring.of(BLACK, WHITE)
+  t.deepEqual(pattern.colorAt(Point(0, 0, 0)), BLACK)
+  t.deepEqual(pattern.colorAt(Point(1, 0, 0)), WHITE)
+  t.deepEqual(pattern.colorAt(Point(0, 0, 1)), WHITE)
+  // 0.708 = just slightly more than √2/2
+  t.deepEqual(pattern.colorAt(Point(0.708, 0, 0.708)), WHITE)
 })
