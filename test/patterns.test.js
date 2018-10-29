@@ -1,5 +1,5 @@
 import test from "ava"
-import { Pattern, Stripe, Color, Point, Sphere, Matrix } from "../src/models"
+import { Pattern, Stripe, Gradient, Color, Point, Sphere, Matrix } from "../src/models"
 
 const { WHITE, BLACK } = Color
 
@@ -65,4 +65,12 @@ test("a stripe pattern alternates in x", t => {
   t.is(pattern.colorAt(Point(-0.1, 0, 0)), BLACK)
   t.is(pattern.colorAt(Point(-1, 0, 0)), BLACK)
   t.is(pattern.colorAt(Point(-1.1, 0, 0)), WHITE)
+})
+
+test("a gradient pattern linearly interpolates between colors", t => {
+  const pattern = Gradient.of(BLACK, WHITE)
+  t.deepEqual(pattern.colorAt(Point(0, 0, 0)), BLACK)
+  t.deepEqual(pattern.colorAt(Point(0.25, 0, 0)), Color.of(0.25, 0.25, 0.25))
+  t.deepEqual(pattern.colorAt(Point(0.5, 0, 0)), Color.of(0.5, 0.5, 0.5))
+  t.deepEqual(pattern.colorAt(Point(0.75, 0, 0)), Color.of(0.75, 0.75, 0.75))
 })
