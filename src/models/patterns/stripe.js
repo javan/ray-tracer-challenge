@@ -1,4 +1,4 @@
-import { Pattern } from "./pattern"
+import { Pattern } from "../pattern"
 
 export class Stripe extends Pattern {
   colorAt({ x }) {

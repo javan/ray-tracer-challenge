@@ -1,7 +1,7 @@
-import { Shape } from "./shape"
-import { Vector } from "./position"
-import { Intersection, EPSILON } from "./intersection"
-import { Intersections } from "./intersections"
+import { Shape } from "../shape"
+import { Vector } from "../position"
+import { Intersection, EPSILON } from "../intersection"
+import { Intersections } from "../intersections"
 
 export class Plane extends Shape {
   localNormalAt() {

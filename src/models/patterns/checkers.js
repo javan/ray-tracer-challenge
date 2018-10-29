@@ -1,4 +1,4 @@
-import { Pattern } from "./pattern"
+import { Pattern } from "../pattern"
 
 export class Checkers extends Pattern {
   colorAt({ x, y, z }) {

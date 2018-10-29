@@ -1,7 +1,7 @@
-import { Shape } from "./shape"
-import { Point } from "./position"
-import { Intersection } from "./intersection"
-import { Intersections } from "./intersections"
+import { Shape } from "../shape"
+import { Point } from "../position"
+import { Intersection } from "../intersection"
+import { Intersections } from "../intersections"
 
 export class Sphere extends Shape {
   localNormalAt(point) {

@@ -1,4 +1,4 @@
-import { Pattern } from "./pattern"
+import { Pattern } from "../pattern"
 
 export class Gradient extends Pattern {
   colorAt({ x }) {

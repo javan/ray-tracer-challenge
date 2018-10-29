@@ -2,7 +2,7 @@ import { PointLight } from "./point_light"
 import { Point } from "./position"
 import { Color } from "./color"
 import { Matrix } from "./matrix"
-import { Sphere } from "./sphere"
+import { Sphere } from "./shapes"
 import { Intersections } from "./intersections"
 import { Ray } from "./ray"
 
