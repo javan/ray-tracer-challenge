@@ -1,5 +1,4 @@
 import { Controller } from "stimulus"
-import { Color } from "../models"
 import { nextFrame, createCanvasElement } from "../helpers"
 import Worker from "./chapter_10_worker"
 

@@ -1,5 +1,4 @@
 import { Controller } from "stimulus"
-import { Canvas, Color, Material, Matrix } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import Worker from "./chapter_06_worker"
 

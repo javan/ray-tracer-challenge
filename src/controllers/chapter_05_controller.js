@@ -1,4 +1,3 @@
-import { Color, Matrix, Point, Vector, Ray, Sphere } from "../models"
 import { nextFrame, nextIdle, DOMCanvasProxy } from "../helpers"
 import { Controller } from "stimulus"
 

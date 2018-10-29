@@ -1,5 +1,3 @@
-import { Camera, Color, Matrix, Plane, Point, PointLight, Sphere, Vector, World } from "../models"
-
 onmessage = ({ data }) => {
   const scene = new Scene(data.width, data.height)
   let { startX, endX } = data

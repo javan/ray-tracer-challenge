@@ -1,5 +1,3 @@
-import { Color, Material, Matrix, PointLight, Point, Ray, Sphere } from "../models"
-
 onmessage = ({ data }) => {
   const sphere = Sphere.create({
     color: Color.from(data.color),
