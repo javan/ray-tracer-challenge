@@ -63,7 +63,11 @@ class Scene {
 
   get floor() {
     const pattern = Checkers.of(Color.WHITE, Color.BLACK)
-    pattern.transform = Matrix.rotationY(Math.PI / 4).multiplyBy( Matrix.scaling(2,2,2) )
+    pattern.transform = Matrix.transform({
+      rotate: { y: 45 },
+      scale: 2,
+    })
+
     return Plane.create({
       pattern,
       diffuse: 0.7,
@@ -77,18 +81,27 @@ class Scene {
       pattern,
       diffuse: 0.7,
       ambient: 0.2,
-      transform: Matrix.translation(0, 0, 5)
-        .multiplyBy( Matrix.rotationX(Math.PI / 2) )
+      transform: Matrix.transform({
+        rotate: { x: 90 },
+        move: { z: 5 },
+      })
     })
   }
 
   get sphere() {
     const pattern = Stripe.of(Color.of(1, 0.5, 0), Color.of(1, 0.3, 0))
-    pattern.transform = Matrix.rotationZ(Math.PI / 2).multiplyBy( Matrix.scaling(0.05, 0.05, 0.05) )
+    pattern.transform = Matrix.transform({
+      rotate: { z: 90 },
+      scale: 0.05
+    })
+
     return Sphere.create({
       pattern,
       ambient: 0.15,
-      transform: Matrix.translation(1.5, 0, 0).multiplyBy( Matrix.scaling(0.5, 4.5, 0.5) )
+      transform: Matrix.transform({
+        scale: { x: 0.5, y: 4.5, z: 0.5 },
+        move: { x: 1.5 },
+      })
     })
   }
 }

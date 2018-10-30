@@ -80,6 +80,34 @@ export class Matrix extends Array {
     )
   }
 
+  static transform(transforms) {
+    let matrix = this.identity
+
+    Object.keys(transforms).reverse().forEach(key => {
+      let value = transforms[key]
+      if (typeof value == "number") {
+        value = { x: value, y: value, z: value }
+      }
+      const { x, y, z } = { x: 0, y: 0, z: 0, ...value }
+
+      switch (key) {
+        case "move":
+          matrix = matrix.multiplyBy( Matrix.translation(x, y, z) )
+          break
+        case "rotate":
+          if (x) matrix = matrix.multiplyBy( Matrix.rotationX(radians(x)) )
+          if (y) matrix = matrix.multiplyBy( Matrix.rotationY(radians(y)) )
+          if (z) matrix = matrix.multiplyBy( Matrix.rotationZ(radians(z)) )
+          break
+        case "scale":
+          matrix = matrix.multiplyBy( Matrix.scaling(x, y, z) )
+          break
+      }
+    })
+
+    return matrix
+  }
+
   multiplyBy(object) {
     if (object instanceof Tuple) {
       const values = this.map(row => dotProduct(row, object))
@@ -163,4 +191,8 @@ Matrix.IDENTITY = Matrix.identity
 
 function isOdd(number) {
   return number % 2 != 0
+}
+
+function radians(degrees) {
+  return degrees / 180 * Math.PI
 }

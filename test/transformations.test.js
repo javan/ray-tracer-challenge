@@ -130,26 +130,25 @@ test("chained transformations must be applied in reverse order", t => {
 
   const T = C.multiplyBy(B).multiplyBy(A)
   t.deepEqual(T.multiplyBy(p).fixed, Point(15, 0, 7).fixed)
+})
 
-  // TODO:
-  // Fluent APIs
-  // Depending on your implementation language, you may be able
-  // to present a more intuitive interface for concatenating transformation
-  // matrices. A fluent API, for instance, could let you declare your
-  // transformations in a natural order like this:
-  //
-  //  transform ← identity().
-  //              rotate_x(π / 2).
-  //              scale(5, 5, 5).
-  //              translate(10, 5, 7)
-  //
-  // The call to identity() returns the identity matrix, and rotate_x(π/2) is
-  // then invoked on it. This multiplies the corresponding rotation matrix by
-  // the caller, "rotation" times "identity", effectively flipping the order of
-  // operations around. Each subsequent call in this chain multiplies its matrix
-  // by the result of the previous call, eventually turning the whole chain
-  // "inside-out".
-  //
-  // const T2 = A.chain.multiplyBy(B).multiplyBy(C).value
-  // t.deepEqual(T2.multiplyBy(p).fixed, Point(15, 0, 7).fixed)
+test("chained transformations", t => {
+  const p = Point(1, 0, 1)
+
+  const A = Matrix.rotationX(Math.PI / 2)
+  const B = Matrix.scaling(5, 5, 5)
+  const C = Matrix.translation(10, 5, 7)
+  const T = C.multiplyBy(B).multiplyBy(A)
+
+  t.deepEqual(Matrix.transform({
+    rotate: { x: 90 },
+     scale: { x: 5,  y: 5, z: 5 },
+      move: { x: 10, y: 5, z: 7 },
+  }), T)
+
+  t.deepEqual(Matrix.transform({
+    rotate: { x: 90 },
+     scale: 5,
+      move: { x: 10, y: 5, z: 7 },
+  }), T)
 })
