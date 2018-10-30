@@ -57,7 +57,7 @@ class Scene {
 
   get world() {
     const world = World.of(this.floor, this.wall, this.sphere)
-    world.light = new PointLight(Point(0, 7.5, -10), Color.WHITE.multiplyBy(1.2))
+    world.light = new PointLight(Point(-3, 6, -8), Color.WHITE.multiplyBy(1.2))
     return world
   }
 
@@ -66,7 +66,8 @@ class Scene {
     pattern.transform = Matrix.rotationY(Math.PI / 4).multiplyBy( Matrix.scaling(2,2,2) )
     return Plane.create({
       pattern,
-      ambient: 0.2,
+      diffuse: 0.7,
+      ambient: 0.3,
     })
   }
 
@@ -75,6 +76,7 @@ class Scene {
     return Plane.create({
       pattern,
       diffuse: 0.7,
+      ambient: 0.2,
       transform: Matrix.translation(0, 0, 5)
         .multiplyBy( Matrix.rotationX(Math.PI / 2) )
     })
@@ -82,9 +84,11 @@ class Scene {
 
   get sphere() {
     const pattern = Stripe.of(Color.of(1, 0.5, 0), Color.of(1, 0.3, 0))
-    pattern.transform = Matrix.rotationZ( Math.PI / 2).multiplyBy( Matrix.scaling(0.2, 0.2, 0.2) )
+    pattern.transform = Matrix.rotationZ(Math.PI / 2).multiplyBy( Matrix.scaling(0.05, 0.05, 0.05) )
     return Sphere.create({
-      pattern
+      pattern,
+      ambient: 0.15,
+      transform: Matrix.translation(1.5, 0, 0).multiplyBy( Matrix.scaling(0.5, 4.5, 0.5) )
     })
   }
 }
