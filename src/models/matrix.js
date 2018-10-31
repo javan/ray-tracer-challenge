@@ -109,6 +109,9 @@ export class Matrix extends Array {
   }
 
   multiplyBy(object) {
+    if (object === Matrix.IDENTITY || this === Matrix.IDENTITY) {
+      return object
+    }
     if (object instanceof Tuple) {
       const values = this.map(row => dotProduct(row, object))
       return object.constructor.of(...values)
