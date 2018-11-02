@@ -5,13 +5,14 @@ export class Material {
     return new Material(...args)
   }
 
-  constructor({ color, ambient, diffuse, specular, shininess, pattern } = {}) {
-    this.color     = color || Color.WHITE
-    this.ambient   = typeof ambient   == "number" ? ambient   : 0.1
-    this.diffuse   = typeof diffuse   == "number" ? diffuse   : 0.9
-    this.specular  = typeof specular  == "number" ? specular  : 0.9
-    this.shininess = typeof shininess == "number" ? shininess : 200
-    this.pattern   = pattern
+  constructor({ color, ambient, diffuse, specular, shininess, reflective, pattern } = {}) {
+    this.color      = color || Color.WHITE
+    this.ambient    = typeof ambient    == "number" ? ambient    : 0.1
+    this.diffuse    = typeof diffuse    == "number" ? diffuse    : 0.9
+    this.specular   = typeof specular   == "number" ? specular   : 0.9
+    this.shininess  = typeof shininess  == "number" ? shininess  : 200
+    this.reflective = typeof reflective == "number" ? reflective : 0.0
+    this.pattern    = pattern
   }
 
   lighting({ object, light, point, eyev, normalv, shadowed }) {

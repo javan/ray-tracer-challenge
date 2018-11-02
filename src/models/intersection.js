@@ -10,6 +10,7 @@ export class Intersection {
     this.point = ray.position(this.t)
     this.eyev = ray.direction.negate
     this.normalv = this.object.normalAt(this.point)
+    this.reflectv = ray.direction.reflect(this.normalv)
 
     if (this.normalv.dotProduct(this.eyev) < 0) {
       this.inside = true

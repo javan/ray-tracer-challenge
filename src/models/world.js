@@ -6,6 +6,8 @@ import { Sphere } from "./shapes"
 import { Intersections } from "./intersections"
 import { Ray } from "./ray"
 
+const MAX_RECURSIVE_DEPTH = 4
+
 export class World extends Array {
   static get default() {
     const world = World.of(
@@ -28,18 +30,29 @@ export class World extends Array {
     , new Intersections).sorted
   }
 
-  shade(hit) {
+  shade(hit, remaining) {
     const { light } = this
     const { object, point, eyev, normalv } = hit
     const shadowed = this.isShadowed(point)
-    return object.material.lighting({ object, light, point, eyev, normalv, shadowed })
+    const surface = object.material.lighting({ object, light, point, eyev, normalv, shadowed })
+    const reflected = this.reflect(hit, remaining)
+    return surface.add(reflected)
   }
 
-  colorAt(ray) {
+  reflect(hit, remaining = MAX_RECURSIVE_DEPTH) {
+    if (remaining <= 0 || hit.object.material.reflective == 0) {
+      return Color.BLACK
+    }
+    const reflectRay = new Ray(hit.point, hit.reflectv)
+    const color = this.colorAt(reflectRay, remaining - 1)
+    return color.multiplyBy(hit.object.material.reflective)
+  }
+
+  colorAt(ray, remaining) {
     const { hit } = this.intersect(ray)
     if (hit) {
       hit.prepare(ray)
-      return this.shade(hit)
+      return this.shade(hit, remaining)
     } else {
       return Color.BLACK
     }

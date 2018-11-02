@@ -1,5 +1,5 @@
 import test from "ava"
-import { World, PointLight, Point, Vector, Color, Sphere, Matrix, Ray, Intersection } from "../src/models"
+import { World, PointLight, Point, Vector, Color, Sphere, Plane, Matrix, Ray, Intersection } from "../src/models"
 
 test("creating a world", t => {
   const w = new World
@@ -109,4 +109,70 @@ test("there is no shadow when an object is behind the point", t => {
   const world = World.default
   const point = Point(-2, 2, -2)
   t.is(world.isShadowed(point), false)
+})
+
+test("reflected color for non-reflective material", t => {
+  const world = World.default
+  const ray = new Ray(Point(0, 0, 0), Vector(0, 0, 1))
+  const shape = world[1]
+  shape.material.ambient = 1
+  const hit = new Intersection(1, shape)
+  hit.prepare(ray)
+  const color = world.reflect(hit)
+  t.deepEqual(color, Color.of(0, 0, 0))
+})
+
+test("reflected color for reflective material", t => {
+  const world = World.default
+  const shape = Plane.create({
+    reflective: 0.5,
+    transform: Matrix.translation(0, -1, 0)
+  })
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
+  const hit = new Intersection(Math.sqrt(2), shape)
+  hit.prepare(ray)
+  const color = world.reflect(hit)
+  t.deepEqual(color.fixed, Color.of(0.19033, 0.23791, 0.14275))
+})
+
+test("reflected color at maximum rescursive depth", t => {
+  const world = World.default
+  const shape = Plane.create({
+    reflective: 0.5,
+    transform: Matrix.translation(0, -1, 0)
+  })
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
+  const hit = new Intersection(Math.sqrt(2), shape)
+  hit.prepare(ray)
+  const color = world.reflect(hit, 0)
+  t.deepEqual(color, Color.of(0, 0, 0))
+})
+
+test("shade color for reflective material", t => {
+  const world = World.default
+  const shape = Plane.create({
+    reflective: 0.5,
+    transform: Matrix.translation(0, -1, 0)
+  })
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
+  const hit = new Intersection(Math.sqrt(2), shape)
+  hit.prepare(ray)
+  const color = world.shade(hit)
+  t.deepEqual(color.fixed, Color.of(0.87676, 0.92434, 0.82917))
+})
+
+test("colorAt with mutually reflective surfaces", t => {
+  const world = World.of(
+    Plane.create({
+      reflective: 1,
+      transform: Matrix.translation(0, -1, 0)
+    }),
+    Plane.create({
+      reflective: 1,
+      transform: Matrix.translation(0, 1, 0)
+    })
+  )
+  world.light = new PointLight(Point(-10, 10, -10), Color.WHITE)
+  const ray = new Ray(Point(0, 0, 0), Vector(0, 1, 0))
+  t.truthy(world.colorAt(ray))
 })
