@@ -6,7 +6,7 @@ export class Intersection {
     this.object = object
   }
 
-  prepare(ray) {
+  prepare(ray, intersections) {
     this.point = ray.position(this.t)
     this.eyev = ray.direction.negate
     this.normalv = this.object.normalAt(this.point)
@@ -19,7 +19,32 @@ export class Intersection {
       this.inside = false
     }
 
-    // Offset point to prevent self-shadowing “acne”
-    this.point = this.point.add(this.normalv.multiplyBy(EPSILON))
+    const { point } = this
+    const offset = this.normalv.multiplyBy(EPSILON)
+    this.point = point.add(offset)
+    this.underPoint = point.subtract(offset)
+
+    if (intersections) {
+      const objects = new Set
+
+      for (const intersection of intersections) {
+        const { object } = intersection
+
+        if (intersection === this) {
+          this.n1 = objects.size ? last(objects).material.refractive : 1.0
+        }
+
+        objects.has(object) ? objects.delete(object) : objects.add(object)
+
+        if (intersection === this) {
+          this.n2 = objects.size ? last(objects).material.refractive : 1.0
+          break
+        }
+      }
+    }
   }
+}
+
+function last(set) {
+  return Array.from(set).slice(-1)[0]
 }

@@ -1,5 +1,5 @@
 import test from "ava"
-import { Intersection, Intersections, Sphere, Ray, Point, Vector } from "../src/models"
+import { Intersection, Intersections, Sphere, Ray, Point, Vector, Matrix } from "../src/models"
 
 test("an intersection encapsulates `t` and `object`", t => {
   const s = Sphere.create()
@@ -96,4 +96,45 @@ test("the point is offset", t => {
   hit.prepare(ray)
   const { z } = hit.point
   t.true(z > -1.1 && z < -1, `hit.point.z (${z}) is not between -1.1 and -1 (exclusive)`)
+})
+
+test("the under point is offset below the surface", t => {
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
+  const shape = Sphere.glass()
+  const hit = new Intersection(4, shape)
+  const xs = Intersections.of(hit)
+  hit.prepare(ray, xs)
+  const { z } = hit.underPoint
+  t.true(z > -1 && z < -0.9, `hit.underPoint.z (${z}) is not between -1 and -0.9 (exclusive)`)
+})
+
+test("n1 and n2 at various intersectionst", t => {
+  const a = Sphere.glass({ transform: Matrix.scaling(2, 2, 2),         refractive: 1.5 })
+  const b = Sphere.glass({ transform: Matrix.translation(0, 0, -0.25), refractive: 2.0 })
+  const c = Sphere.glass({ transform: Matrix.translation(0, 0, 0.25),  refractive: 2.5 })
+
+  const xs = Intersections.of(
+    new Intersection(2,    a),
+    new Intersection(2.75, b),
+    new Intersection(3.25, c),
+    new Intersection(4.75, b),
+    new Intersection(5.25, c),
+    new Intersection(6,    a),
+  )
+
+  const ray = new Ray(Point(0, 0, -4), Vector(0, 0, 1))
+  xs.forEach(x => x.prepare(ray, xs))
+
+  t.is(xs[0].n1, 1.0)
+  t.is(xs[0].n2, 1.5)
+  t.is(xs[1].n1, 1.5)
+  t.is(xs[1].n2, 2.0)
+  t.is(xs[2].n1, 2.0)
+  t.is(xs[2].n2, 2.5)
+  t.is(xs[3].n1, 2.5)
+  t.is(xs[3].n2, 2.5)
+  t.is(xs[4].n1, 2.5)
+  t.is(xs[4].n2, 1.5)
+  t.is(xs[5].n1, 1.5)
+  t.is(xs[5].n2, 1.0)
 })

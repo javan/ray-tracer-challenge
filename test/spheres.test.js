@@ -97,3 +97,15 @@ test("the normal is a normalized vector", t => {
   const n = s.normalAt(Point(Math.sqrt(3) / 3, Math.sqrt(3) / 3, Math.sqrt(3) / 3))
   t.deepEqual(n, n.normalize)
 })
+
+test("the default material for a glass sphere", t => {
+  const m = Sphere.glass().material
+  t.is(m.transparency, 1.0)
+  t.is(m.refractive, 1.5)
+})
+
+test("the material for a glass sphere can be assigned", t => {
+  const m = Sphere.glass({ refractive: 2.0 }).material
+  t.is(m.transparency, 1.0)
+  t.is(m.refractive, 2.0)
+})

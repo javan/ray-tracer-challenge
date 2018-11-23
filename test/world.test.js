@@ -1,5 +1,5 @@
 import test from "ava"
-import { World, PointLight, Point, Vector, Color, Sphere, Plane, Matrix, Ray, Intersection } from "../src/models"
+import { World, PointLight, Point, Vector, Color, Sphere, Plane, Matrix, Ray, Intersections, Intersection, Pattern } from "../src/models"
 
 test("creating a world", t => {
   const w = new World
@@ -146,6 +146,64 @@ test("reflected color at maximum rescursive depth", t => {
   hit.prepare(ray)
   const color = world.reflect(hit, 0)
   t.deepEqual(color, Color.of(0, 0, 0))
+})
+
+test("refracted color with opaque surface", t => {
+  const world = World.default
+  const ray = new Ray(Point(0, 0, -5), Vector(0, 0, 1))
+  const xs = Intersections.of(
+    new Intersection(4, world[0]),
+    new Intersection(6, world[0]),
+  )
+  xs[0].prepare(ray, xs)
+  const color = world.refract(xs[0])
+  t.deepEqual(color.fixed, Color.of(0, 0, 0))
+})
+
+test("refracted color at maximum rescursive depth", t => {
+  const world = World.default
+  world[0].material.transparency = 1.0
+  world[0].material.refractive = 1.5
+  const ray = new Ray(Point(0, 0, Math.sqrt(2) / 2), Vector(0, 1, 0))
+  const xs = Intersections.of(
+    new Intersection(-Math.sqrt(2) / 2, world[0]),
+    new Intersection(-Math.sqrt(2) / 2, world[1]),
+  )
+  xs[1].prepare(ray, xs)
+  const color = world.refract(xs[1], 0)
+  t.deepEqual(color, Color.of(0, 0, 0))
+})
+
+test("refracted color under total internal reflection", t => {
+  const world = World.default
+  world[0].material.transparency = 1.0
+  world[0].material.refractive = 1.5
+  const ray = new Ray(Point(0, 0, -Math.sqrt(2) / 2), Vector(0, 1, 0))
+  const xs = Intersections.of(
+    new Intersection(-Math.sqrt(2) / 2, world[0]),
+    new Intersection(Math.sqrt(2) / 2, world[0]),
+  )
+  xs[1].prepare(ray, xs)
+  const color = world.refract(xs[1])
+  t.deepEqual(color, Color.of(0, 0, 0))
+})
+
+test("refracted color with refracted ray", t => {
+  const world = World.default
+  world[0].material.ambient = 0
+  world[0].material.pattern = new Pattern
+  world[1].material.transparency = 1.0
+  world[1].material.refractive = 1.5
+  const ray = new Ray(Point(0, 0, 0.1), Vector(0, 1, 0))
+  const xs = Intersections.of(
+    new Intersection(-0.9899, world[0]),
+    new Intersection(-0.4899, world[1]),
+    new Intersection( 0.4899, world[1]),
+    new Intersection( 0.9899, world[0]),
+  )
+  xs[2].prepare(ray, xs)
+  const color = world.refract(xs[2])
+  t.deepEqual(color, Color.of(0, 0.99878, 0.04724))
 })
 
 test("shade color for reflective material", t => {

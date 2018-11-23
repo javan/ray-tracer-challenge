@@ -9,6 +9,8 @@ test("the default material", t => {
   t.is(m.specular, 0.9)
   t.is(m.shininess, 200)
   t.is(m.reflective, 0.0)
+  t.is(m.transparency, 0.0)
+  t.is(m.refractive, 1.0)
 })
 
 test("lighting with the eye between the light and the surface", t => {

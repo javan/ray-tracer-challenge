@@ -48,6 +48,25 @@ export class World extends Array {
     return color.multiplyBy(hit.object.material.reflective)
   }
 
+  refract(hit, remaining = MAX_RECURSIVE_DEPTH) {
+    if (remaining <= 0 || hit.object.material.transparency == 0) {
+      return Color.BLACK
+    }
+
+    const nRatio = hit.n1 / hit.n2
+    const cosI = hit.eyev.dotProduct(hit.normalv)
+    const sin2t = nRatio^2 * (1 - cosI^2)
+    if (sin2t > 1) {
+      return Color.BLACK
+    }
+
+    const cosT = Math.sqrt(1.0 - sin2t)
+    const direction = hit.normalv.multiplyBy(nRatio * cosI - cosT).subtract(hit.eyev.multiplyBy(nRatio))
+    const refractRay = new Ray(hit.underPoint, direction)
+    const color = this.colorAt(refractRay, remaining - 1)
+    return color.multiplyBy(hit.object.material.transparency)
+  }
+
   colorAt(ray, remaining) {
     const { hit } = this.intersect(ray)
     if (hit) {

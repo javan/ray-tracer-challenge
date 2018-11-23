@@ -3,13 +3,17 @@ import { Point, Vector } from "./position"
 import { Material } from "./material"
 
 export class Shape {
-  static create(...args) {
-    return new this(...args)
+  static create(attributes = {}) {
+    return new this(attributes)
   }
 
-  constructor({ color, ambient, diffuse, specular, shininess, reflective, pattern, transform } = {}) {
-    this.material = Material.create({ color, ambient, diffuse, specular, shininess, reflective, pattern })
-    this.transform = transform || Matrix.IDENTITY
+  static glass(attributes = {}) {
+    return this.create({ transparency: 1.0, refractive: 1.5, ...attributes })
+  }
+
+  constructor(attributes) {
+    this.material = Material.create(attributes)
+    this.transform = attributes.transform || Matrix.IDENTITY
   }
 
   normalAt(point) {
