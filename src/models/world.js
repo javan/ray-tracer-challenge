@@ -55,7 +55,7 @@ export class World extends Array {
 
     const nRatio = hit.n1 / hit.n2
     const cosI = hit.eyev.dotProduct(hit.normalv)
-    const sin2t = nRatio^2 * (1 - cosI^2)
+    const sin2t = nRatio**2 * (1 - cosI**2)
     if (sin2t > 1) {
       return Color.BLACK
     }
