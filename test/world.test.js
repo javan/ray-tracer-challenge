@@ -190,7 +190,7 @@ test("refracted color under total internal reflection", t => {
 
 test("refracted color with refracted ray", t => {
   const world = World.default
-  world[0].material.ambient = 0
+  world[0].material.ambient = 1.0
   world[0].material.pattern = new Pattern
   world[1].material.transparency = 1.0
   world[1].material.refractive = 1.5
@@ -203,7 +203,7 @@ test("refracted color with refracted ray", t => {
   )
   xs[2].prepare(ray, xs)
   const color = world.refract(xs[2])
-  t.deepEqual(color, Color.of(0, 0.99878, 0.04724))
+  t.deepEqual(color.fixed, Color.of(0, 0.99888, 0.04722))
 })
 
 test("shade color for reflective material", t => {
