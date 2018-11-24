@@ -43,6 +43,27 @@ export class Intersection {
       }
     }
   }
+
+  get reflectance() {
+    const value = this.schlick
+    Object.defineProperty(this, "reflectance", { value })
+    return value
+  }
+
+  get schlick() {
+    const { n1, n2 } = this
+    let cos = this.eyev.dotProduct(this.normalv)
+    if (n1 > n2) {
+      const n = n1 / n2
+      const sin2t = n**2 * (1.0 - cos**2)
+      if (sin2t > 1.0) {
+        return 1.0
+      }
+      cos = Math.sqrt(1.0 - sin2t)
+    }
+    const r0 = ((n1 - n2) / (n1 + n2))**2
+    return r0 + (1 - r0) * (1 - cos)**5
+  }
 }
 
 function last(set) {

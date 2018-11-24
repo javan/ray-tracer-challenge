@@ -242,6 +242,30 @@ test("shade color with transparent material", t => {
   t.deepEqual(color.fixed, Color.of(0.93643, 0.68643, 0.68643))
 })
 
+test("shade color with reflective, transparent material", t => {
+  const world = World.default
+  const floor = Plane.create({
+    transform: Matrix.translation(0, -1, 0),
+    reflective: 0.5,
+    transparency: 0.5,
+    refractive: 1.5
+  })
+  world.push(floor)
+  const ball = Sphere.create({
+    color: Color.of(1, 0, 0),
+    ambient: 0.5,
+    transform: Matrix.translation(0, -3.5, -0.5)
+  })
+  world.push(ball)
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
+  const xs = Intersections.of(
+    new Intersection(Math.SQRT2, floor)
+  )
+  xs[0].prepare(ray, xs)
+  const color = world.shade(xs[0])
+  t.deepEqual(color.fixed, Color.of(0.93392, 0.69643, 0.69243))
+})
+
 test("colorAt with mutually reflective surfaces", t => {
   const world = World.of(
     Plane.create({

@@ -33,10 +33,19 @@ export class World extends Array {
   shade(hit, remaining) {
     const { light } = this
     const { object, point, eyev, normalv } = hit
+    const { material } = object
+
     const shadowed = this.isShadowed(point)
-    const surface = object.material.lighting({ object, light, point, eyev, normalv, shadowed })
-    const reflected = this.reflect(hit, remaining)
-    const refracted = this.refract(hit, remaining)
+    const surface = material.lighting({ object, light, point, eyev, normalv, shadowed })
+
+    let reflected = this.reflect(hit, remaining)
+    let refracted = this.refract(hit, remaining)
+
+    if (material.reflective > 0 && material.transparency > 0) {
+      reflected = reflected.multiplyBy(hit.reflectance)
+      refracted = refracted.multiplyBy(1 - hit.reflectance)
+    }
+
     return surface.add(reflected).add(refracted)
   }
 

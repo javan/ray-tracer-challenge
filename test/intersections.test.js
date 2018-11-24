@@ -138,3 +138,35 @@ test("n1 and n2 at various intersectionst", t => {
   t.is(xs[5].n1, 1.5)
   t.is(xs[5].n2, 1.0)
 })
+
+test("schlick approximation under total internal reflection", t => {
+  const shape = Sphere.glass()
+  const ray = new Ray(Point(0, 0, -Math.SQRT2 / 2), Vector(0, 1, 0))
+  const xs = Intersections.of(
+    new Intersection(-Math.SQRT2 / 2, shape),
+    new Intersection( Math.SQRT2 / 2, shape),
+  )
+  xs[1].prepare(ray, xs)
+  t.is(xs[1].schlick, 1.0)
+})
+
+test("schlick approximation with a perpendicular viewing angle", t => {
+  const shape = Sphere.glass()
+  const ray = new Ray(Point(0, 0, 0), Vector(0, 1, 0))
+  const xs = Intersections.of(
+    new Intersection(-1, shape),
+    new Intersection( 1, shape),
+  )
+  xs[1].prepare(ray, xs)
+  t.is(Number(xs[1].schlick.toFixed(2)), 0.04)
+})
+
+test("schlick approximation with small angle and n2 > n1", t => {
+  const shape = Sphere.glass()
+  const ray = new Ray(Point(0, 0.99, -2), Vector(0, 0, 1))
+  const xs = Intersections.of(
+    new Intersection(1.8589, shape),
+  )
+  xs[0].prepare(ray, xs)
+  t.is(Number(xs[0].schlick.toFixed(5)), 0.48873)
+})
