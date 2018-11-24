@@ -128,8 +128,8 @@ test("reflected color for reflective material", t => {
     reflective: 0.5,
     transform: Matrix.translation(0, -1, 0)
   })
-  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
-  const hit = new Intersection(Math.sqrt(2), shape)
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
+  const hit = new Intersection(Math.SQRT2, shape)
   hit.prepare(ray)
   const color = world.reflect(hit)
   t.deepEqual(color.fixed, Color.of(0.19033, 0.23791, 0.14275))
@@ -141,8 +141,8 @@ test("reflected color at maximum rescursive depth", t => {
     reflective: 0.5,
     transform: Matrix.translation(0, -1, 0)
   })
-  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
-  const hit = new Intersection(Math.sqrt(2), shape)
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
+  const hit = new Intersection(Math.SQRT2, shape)
   hit.prepare(ray)
   const color = world.reflect(hit, 0)
   t.deepEqual(color, Color.of(0, 0, 0))
@@ -164,10 +164,10 @@ test("refracted color at maximum rescursive depth", t => {
   const world = World.default
   world[0].material.transparency = 1.0
   world[0].material.refractive = 1.5
-  const ray = new Ray(Point(0, 0, Math.sqrt(2) / 2), Vector(0, 1, 0))
+  const ray = new Ray(Point(0, 0, Math.SQRT2 / 2), Vector(0, 1, 0))
   const xs = Intersections.of(
-    new Intersection(-Math.sqrt(2) / 2, world[0]),
-    new Intersection(-Math.sqrt(2) / 2, world[1]),
+    new Intersection(-Math.SQRT2 / 2, world[0]),
+    new Intersection(-Math.SQRT2 / 2, world[1]),
   )
   xs[1].prepare(ray, xs)
   const color = world.refract(xs[1], 0)
@@ -178,10 +178,10 @@ test("refracted color under total internal reflection", t => {
   const world = World.default
   world[0].material.transparency = 1.0
   world[0].material.refractive = 1.5
-  const ray = new Ray(Point(0, 0, -Math.sqrt(2) / 2), Vector(0, 1, 0))
+  const ray = new Ray(Point(0, 0, -Math.SQRT2 / 2), Vector(0, 1, 0))
   const xs = Intersections.of(
-    new Intersection(-Math.sqrt(2) / 2, world[0]),
-    new Intersection(Math.sqrt(2) / 2, world[0]),
+    new Intersection(-Math.SQRT2 / 2, world[0]),
+    new Intersection(Math.SQRT2 / 2, world[0]),
   )
   xs[1].prepare(ray, xs)
   const color = world.refract(xs[1])
@@ -212,8 +212,8 @@ test("shade color for reflective material", t => {
     reflective: 0.5,
     transform: Matrix.translation(0, -1, 0)
   })
-  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
-  const hit = new Intersection(Math.sqrt(2), shape)
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
+  const hit = new Intersection(Math.SQRT2, shape)
   hit.prepare(ray)
   const color = world.shade(hit)
   t.deepEqual(color.fixed, Color.of(0.87676, 0.92434, 0.82917))
@@ -233,9 +233,9 @@ test("shade color with transparent material", t => {
     transform: Matrix.translation(0, -3.5, -0.5)
   })
   world.push(ball)
-  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
+  const ray = new Ray(Point(0, 0, -3), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
   const xs = Intersections.of(
-    new Intersection(Math.sqrt(2), floor)
+    new Intersection(Math.SQRT2, floor)
   )
   xs[0].prepare(ray, xs)
   const color = world.shade(xs[0])

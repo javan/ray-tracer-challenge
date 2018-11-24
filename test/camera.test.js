@@ -41,7 +41,7 @@ test("construct a ray when the camera is transformed", t => {
   const c = Camera.create({ hsize: 201, vsize: 101, view: Math.PI / 2, transform })
   const r = c.rayForPixel(100, 50)
   t.deepEqual(r.origin, Point(0, 2, -5))
-  t.deepEqual(r.direction.fixed, Vector(Math.sqrt(2) / 2, 0, -Math.sqrt(2) / 2).fixed)
+  t.deepEqual(r.direction.fixed, Vector(Math.SQRT2 / 2, 0, -Math.SQRT2 / 2).fixed)
 })
 
 test("rendering a world with a camera", t => {

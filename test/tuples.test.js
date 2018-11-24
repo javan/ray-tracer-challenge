@@ -171,7 +171,7 @@ test("reflecting a vector approaching at 45°", t => {
 
 test("reflecting a vector off a slanted surface", t => {
   const v = Vector(0, -1, 0)
-  const n = Vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0)
+  const n = Vector(Math.SQRT2 / 2, Math.SQRT2 / 2, 0)
   const r = v.reflect(n)
   t.deepEqual(r.fixed, Vector(1, 0, 0).fixed)
 })

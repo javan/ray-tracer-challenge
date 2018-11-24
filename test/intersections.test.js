@@ -63,11 +63,11 @@ test("precomputing the state of an intersection", t => {
 })
 
 test("precomputing the reflection vector", t => {
-  const ray = new Ray(Point(0, 0, -1), Vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2))
+  const ray = new Ray(Point(0, 0, -1), Vector(0, -Math.SQRT2 / 2, Math.SQRT2 / 2))
   const shape = Sphere.create()
-  const hit = new Intersection(Math.sqrt(2), shape)
+  const hit = new Intersection(Math.SQRT2, shape)
   hit.prepare(ray)
-  t.deepEqual(hit.reflectv.fixed, Vector(0, Math.sqrt(2) / 2, Math.sqrt(2) / 2).fixed)
+  t.deepEqual(hit.reflectv.fixed, Vector(0, Math.SQRT2 / 2, Math.SQRT2 / 2).fixed)
 })
 
 test("an intersection occurs on the outside", t => {

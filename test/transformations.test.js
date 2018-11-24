@@ -47,21 +47,21 @@ test("rotating a point around the x axis", t => {
   const point = Point(0, 1, 0)
   const halfQuarter = Matrix.rotationX(Math.PI / 4)
   const fullQuarter = Matrix.rotationX(Math.PI / 2)
-  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(0, Math.sqrt(2) / 2, Math.sqrt(2) / 2).fixed)
+  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(0, Math.SQRT2 / 2, Math.SQRT2 / 2).fixed)
   t.deepEqual(fullQuarter.multiplyBy(point).fixed, Point(0, 0, 1).fixed)
 })
 
 test("the inverse of an x-rotation rotates in the opposite direction", t => {
   const point = Point(0, 1, 0 )
   const halfQuarter = Matrix.rotationX(Math.PI / 4)
-  t.deepEqual(halfQuarter.inverse.multiplyBy(point).fixed, Point(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2).fixed)
+  t.deepEqual(halfQuarter.inverse.multiplyBy(point).fixed, Point(0, Math.SQRT2 / 2, -Math.SQRT2 / 2).fixed)
 })
 
 test("rotating a point around the y axis", t => {
   const point = Point(0, 0, 1)
   const halfQuarter = Matrix.rotationY(Math.PI / 4)
   const fullQuarter = Matrix.rotationY(Math.PI / 2)
-  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(Math.sqrt(2) / 2, 0, Math.sqrt(2) / 2).fixed)
+  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(Math.SQRT2 / 2, 0, Math.SQRT2 / 2).fixed)
   t.deepEqual(fullQuarter.multiplyBy(point).fixed, Point(1, 0, 0).fixed)
 })
 
@@ -69,7 +69,7 @@ test("rotating a point around the z axis", t => {
   const point = Point(0, 1, 0)
   const halfQuarter = Matrix.rotationZ(Math.PI / 4)
   const fullQuarter = Matrix.rotationZ(Math.PI / 2)
-  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0).fixed)
+  t.deepEqual(halfQuarter.multiplyBy(point).fixed, Point(-Math.SQRT2 / 2, Math.SQRT2 / 2, 0).fixed)
   t.deepEqual(fullQuarter.multiplyBy(point).fixed, Point(-1, 0, 0).fixed)
 })
 

@@ -29,7 +29,7 @@ test("lighting with the eye between light and surface, eye offset 45°", t => {
   const m = Material.create()
   const point = Point(0, 0, 0)
 
-  const eyev = Vector(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
+  const eyev = Vector(0, Math.SQRT2 / 2, -Math.SQRT2 / 2)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 0, -10), Color.of(1, 1, 1))
 
@@ -53,7 +53,7 @@ test("lighting with eye in the path of the reflection vector", t => {
   const m = Material.create()
   const point = Point(0, 0, 0)
 
-  const eyev = Vector(0, -Math.sqrt(2) / 2, -Math.sqrt(2) / 2)
+  const eyev = Vector(0, -Math.SQRT2 / 2, -Math.SQRT2 / 2)
   const normalv = Vector(0, 0, -1)
   const light = new PointLight(Point(0, 10, -10), Color.of(1, 1, 1))
 

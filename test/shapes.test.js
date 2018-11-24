@@ -31,6 +31,6 @@ test("computing the normal on a translated shape", t => {
 
 test("computing the normal on a scaled shape", t => {
   const s = Shape.create({ transform: Matrix.scaling(1, 0.5, 1) })
-  const n = s.normalAt(Point(0, Math.sqrt(2) / 2, -Math.sqrt(2) / 2))
+  const n = s.normalAt(Point(0, Math.SQRT2 / 2, -Math.SQRT2 / 2))
   t.deepEqual(n.fixed, Vector(0, 0.97014, -0.24254))
 })
