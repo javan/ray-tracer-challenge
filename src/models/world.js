@@ -36,7 +36,8 @@ export class World extends Array {
     const shadowed = this.isShadowed(point)
     const surface = object.material.lighting({ object, light, point, eyev, normalv, shadowed })
     const reflected = this.reflect(hit, remaining)
-    return surface.add(reflected)
+    const refracted = this.refract(hit, remaining)
+    return surface.add(reflected).add(refracted)
   }
 
   reflect(hit, remaining = MAX_RECURSIVE_DEPTH) {
