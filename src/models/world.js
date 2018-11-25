@@ -78,9 +78,10 @@ export class World extends Array {
   }
 
   colorAt(ray, remaining) {
-    const { hit } = this.intersect(ray)
+    const intersections = this.intersect(ray)
+    const { hit } = intersections
     if (hit) {
-      hit.prepare(ray)
+      hit.prepare(ray, intersections)
       return this.shade(hit, remaining)
     } else {
       return Color.BLACK
