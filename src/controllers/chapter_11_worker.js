@@ -56,7 +56,7 @@ class Scene {
   }
 
   get world() {
-    const world = World.of(this.floor, this.redSphere, this.blueGlassSphere, this.greenGlassSphere)
+    const world = World.of(this.floor, ...this.redSpheres, this.blueGlassSphere, this.greenGlassSphere)
     world.light = new PointLight(Point(-4.9, 4.9, -1), Color.WHITE)
     return world
   }
@@ -74,15 +74,30 @@ class Scene {
     })
   }
 
-  get redSphere() {
-    return Sphere.create({
+  get redSpheres() {
+    const material = {
       color: Color.of(1, 0.3, 0.2),
       specular: 0.4,
       shininess: 5,
-      transform: Matrix.transform({
-        move: { x: -0.6, y: 1, z: 0.6 },
-      })
-    })
+    }
+
+    return [
+      Sphere.create({ ...material,
+        transform: Matrix.transform({
+          move: { x: 6, y: 1, z: 4 },
+        })
+      }),
+      Sphere.create({ ...material,
+        transform: Matrix.transform({
+          move: { x: 2, y: 1, z: 3 },
+        })
+      }),
+      Sphere.create({ ...material,
+        transform: Matrix.transform({
+          move: { x: -1, y: 1, z: 2 },
+        })
+      }),
+    ]
   }
 
   get blueGlassSphere() {
