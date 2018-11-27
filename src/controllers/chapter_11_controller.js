@@ -5,7 +5,7 @@ import Worker from "./chapter_11_worker"
 const WIDTH  = 200 * window.devicePixelRatio
 const HEIGHT = 150 * window.devicePixelRatio
 const PIXEL_COUNT = WIDTH * HEIGHT
-const WORKER_COUNT = navigator.hardwareConcurrency || 4
+const WORKER_COUNT = 10
 
 export default class extends Controller {
   static targets = [ "preview", "stats" ]
