@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "webpack",
+    "now-build": "rm -rf dist && webpack -p && cp -R public dist && yarn test --verbose 2>&1 > dist/tests.txt",
     "test": "ava",
     "test:watch": "ava --watch"
   },

@@ -1,7 +1,8 @@
 {
-  "version": 1,
-  "type": "static",
-  "public": true,
+  "version": 2,
   "name": "ray-tracer-challenge",
-  "alias": "ray-tracer-challenge.now.sh"
+  "alias": "ray-tracer-challenge.now.sh",
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build" }
+  ]
 }
