@@ -19,7 +19,7 @@ export class Position extends Tuple {
   }
 
   reflect(normal) {
-    return this.subtract(normal.multiplyBy(2).multiplyBy(this.dotProduct(normal)))
+    return this.subtract(normal.multiplyBy(this.dotProduct(normal) * 2))
   }
 }
 
