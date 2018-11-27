@@ -128,10 +128,10 @@ export class Matrix extends Array {
   }
 
   submatrix(row, column) {
-    const matrix = this.clone
-    matrix.splice(row, 1)
-    matrix.forEach(values => values.splice(column, 1))
-    return matrix
+    return this.reduce((matrix, values, index) => {
+      if (index !== row) matrix.push(values.filter((_, index) => index !== column))
+      return matrix
+    }, new Matrix)
   }
 
   minor(row, column) {
@@ -141,10 +141,6 @@ export class Matrix extends Array {
   cofactor(row, column) {
     const minor = this.minor(row, column)
     return isOdd(row + column) ? minor * -1 : minor
-  }
-
-  get clone() {
-    return Matrix.of(...this.map(values => [...values]))
   }
 
   get columns() {
