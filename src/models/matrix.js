@@ -117,14 +117,12 @@ export class Matrix extends Array {
       return object.constructor.of(...values)
     } else {
       const matrix = object
-      const values = this.map(row => row.map((_, index) => dotProduct(row, matrix.columns[index])))
-      return Matrix.of(...values)
+      return this.map(row => row.map((_, index) => dotProduct(row, matrix.columns[index])))
     }
   }
 
   divideBy(number) {
-    const values = this.map(values => values.map(value => value / number))
-    return Matrix.of(...values)
+    return this.map(values => values.map(value => value / number))
   }
 
   submatrix(row, column) {
@@ -181,8 +179,7 @@ export class Matrix extends Array {
   }
 
   get fixed() {
-    const values = this.map(values => values.map(value => Number(value.toFixed(5))))
-    return Matrix.of(...values)
+    return this.map(values => values.map(value => Number(value.toFixed(5))))
   }
 }
 

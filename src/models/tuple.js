@@ -2,20 +2,17 @@ import { dotProduct, product } from "./math"
 
 export class Tuple extends Array {
   add(tuple) {
-    const values = this.map((value, index) => value + tuple[index])
-    return this.constructor.of(...values)
+    return this.map((value, index) => value + tuple[index])
   }
 
   subtract(tuple) {
-    const values = this.map((value, index) => value - tuple[index])
-    return this.constructor.of(...values)
+    return this.map((value, index) => value - tuple[index])
   }
 
   multiplyBy(object) {
-    const values = object instanceof Tuple
+    return object instanceof Tuple
       ? this.map((value, index) => product(value, object[index]))
       : this.map(value => product(value, object))
-    return this.constructor.of(...values)
   }
 
   divideBy(number) {
@@ -27,20 +24,17 @@ export class Tuple extends Array {
   }
 
   clamp(min, max) {
-    const values = this.map(value => Math.max(min, Math.min(max, value)))
-    return this.constructor.of(...values)
+    return this.map(value => Math.max(min, Math.min(max, value)))
   }
 
   get round() {
-    const values = this.map(value => Math.round(value))
-    const value = this.constructor.of(...values)
+    const value = this.map(value => Math.round(value))
     Object.defineProperty(this, "round", { value })
     return value
   }
 
   get fixed() {
-    const values = this.map(value => Number(value.toFixed(5)))
-    return this.constructor.of(...values)
+    return this.map(value => Number(value.toFixed(5)))
   }
 
   get negate() {
