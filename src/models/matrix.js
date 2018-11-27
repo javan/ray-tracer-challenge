@@ -186,7 +186,7 @@ export class Matrix extends Array {
 Matrix.IDENTITY = Matrix.identity
 
 function isOdd(number) {
-  return number % 2 != 0
+  return number & 1 === 1
 }
 
 function radians(degrees) {
