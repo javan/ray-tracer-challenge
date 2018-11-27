@@ -6,7 +6,7 @@ import { Sphere } from "./shapes"
 import { Intersections } from "./intersections"
 import { Ray } from "./ray"
 
-const MAX_RECURSIVE_DEPTH = 4
+const MAX_RECURSIVE_DEPTH = 3
 
 export class World extends Array {
   static get default() {
