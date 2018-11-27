@@ -1,4 +1,4 @@
-import { dotProduct, product, sum } from "./math"
+import { dotProduct, product } from "./math"
 
 export class Tuple extends Array {
   add(tuple) {
@@ -56,7 +56,9 @@ export class Tuple extends Array {
   }
 
   get magnitude() {
-    const value = Math.sqrt(this.map(value => value ** 2).reduce(sum))
+    const value = Math.sqrt(this.reduce((sum, value) => {
+      return sum + value ** 2
+    }, 0))
     Object.defineProperty(this, "magnitude", { value })
     return value
   }

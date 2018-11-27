@@ -1,11 +1,9 @@
 export function dotProduct(a, b) {
-  return a.map((value, index) => value * b[index]).reduce(sum)
+  return a.reduce((sum, value, index) => {
+    return sum + value * b[index]
+  }, 0)
 }
 
 export function product(a, b) {
   return a == 0 ? 0 : a * b
-}
-
-export function sum(a, b) {
-  return a + b
 }
