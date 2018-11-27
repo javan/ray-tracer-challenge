@@ -1,7 +1,14 @@
 import { Tuple } from "./tuple"
 import { dotProduct } from "./math"
 
+const CACHE = {}
+
 export class Matrix extends Array {
+  static of(...rows) {
+    const key = JSON.stringify(rows)
+    return CACHE[key] || (CACHE[key] = super.of(...rows))
+  }
+
   static translation(x, y, z) {
     const matrix = this.identity
     matrix[0][3] = x
@@ -72,12 +79,12 @@ export class Matrix extends Array {
   }
 
   static get identity() {
-    return Matrix.of(
+    return Matrix.from([
       [ 1, 0, 0, 0 ],
       [ 0, 1, 0, 0 ],
       [ 0, 0, 1, 0 ],
       [ 0, 0, 0, 1 ],
-    )
+    ])
   }
 
   static transform(transforms) {
