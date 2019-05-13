@@ -12,17 +12,17 @@
     "test:watch": "ava --watch"
   },
   "dependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.1.6",
-    "ava": "^1.0.0-rc.2",
-    "babel-loader": "^8.0.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "ava": "^1.4.1",
+    "babel-loader": "^8.0.6",
     "express": "^4.16.4",
     "faster.js": "^1.1.0",
-    "stimulus": "^1.1.0",
-    "webpack": "^4.26.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-middleware": "^3.4.0",
+    "stimulus": "^1.1.1",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-middleware": "^3.6.2",
     "worker-loader": "^2.0.0"
   },
   "ava": {
