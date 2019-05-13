@@ -8,6 +8,31 @@
 
 body {
   padding: 1.5em;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  font-size: 11px;
+  text-align: center;
+  margin: 3em 1em 0 1em;
+  color: #525252;
+}
+
+a {
+  color: inherit;
+}
+
+a:active,
+a:hover {
+  color: inherit;
+  outline: 0;
 }
 
 details, form, p {
