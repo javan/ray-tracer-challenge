@@ -57,6 +57,11 @@ details[open] summary {
   cursor: zoom-out;
 }
 
+hr {
+  border: none;
+  margin: 8em 0 0;
+}
+
 ul, ol, li {
   margin-left: 1em;
 }
