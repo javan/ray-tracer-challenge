@@ -12,9 +12,9 @@
     "test:watch": "ava --watch"
   },
   "dependencies": {
-    "@babel/core": "7.4.4",
-    "@babel/plugin-proposal-class-properties": "7.4.4",
-    "@babel/preset-env": "7.4.4",
+    "@babel/core": "7.6.4",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
+    "@babel/preset-env": "7.6.3",
     "ava": "1.4.1",
     "babel-loader": "8.0.6",
     "express": "4.16.4",
