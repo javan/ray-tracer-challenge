@@ -21,7 +21,7 @@
     "faster.js": "1.1.1",
     "stimulus": "1.1.1",
     "webpack": "4.41.2",
-    "webpack-cli": "3.3.2",
+    "webpack-cli": "3.3.10",
     "webpack-dev-middleware": "3.7.2",
     "worker-loader": "2.0.0"
   },
