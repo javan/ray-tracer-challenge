@@ -17,7 +17,7 @@
     "@babel/preset-env": "7.4.4",
     "ava": "1.4.1",
     "babel-loader": "8.0.6",
-    "express": "4.16.4",
+    "express": "4.17.1",
     "faster.js": "1.1.0",
     "stimulus": "1.1.1",
     "webpack": "4.31.0",
