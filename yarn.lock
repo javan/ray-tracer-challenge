@@ -2787,10 +2787,10 @@ fast-json-stable-stringify@^2.0.0:
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
   integrity sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
 
-faster.js@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/faster.js/-/faster.js-1.1.0.tgz#3d65c197535ac3739abda1a0bbe79df27fb47a26"
-  integrity sha512-gB5AOIxeIVPD0mRghsWhCrI/o4/kKWY0zJlbMdt+aNwQPAltwejS0ljPJj5SSldydK6+EnTJziQ0DK8boiNWbA==
+faster.js@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/faster.js/-/faster.js-1.1.1.tgz#8bbd7eefdb8f03faac26ad5025b059f94c5cfb4d"
+  integrity sha512-vPThNSLL/E1f7cLHd9yuayxZR82o/Iic4S5ZY45iY5AgBLNIlr3b3c+VpDjoYqjY9a9C/FQVUQy9oTILVP7X0g==
 
 figgy-pudding@^3.1.0, figgy-pudding@^3.5.1:
   version "3.5.1"
