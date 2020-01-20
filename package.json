@@ -13,8 +13,9 @@
     "@babel/core": "7.8.3",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/preset-env": "7.8.3",
-    "ava": "2.4.0",
+    "ava": "3.0.0",
     "babel-loader": "8.0.6",
+    "esm": "^3.2.25",
     "faster.js": "1.1.1",
     "stimulus": "1.1.1",
     "webpack": "4.41.5",
@@ -23,14 +24,9 @@
   },
   "ava": {
     "failFast": true,
-    "compileEnhancements": false,
-    "babel": false,
     "cache": false,
     "files": [
       "test/**/*.test.js"
-    ],
-    "sources": [
-      "src/**/*.js"
     ],
     "require": [
       "esm"
