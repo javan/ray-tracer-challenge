@@ -1,4 +1,4 @@
 node_modules
-dist
 public/*.js
 public/*.js.map
+public/tests.txt

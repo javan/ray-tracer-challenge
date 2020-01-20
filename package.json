@@ -5,9 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "build": "webpack",
-    "now-build": "rm -rf dist && webpack -p && cp -R public dist && yarn test --verbose 2>&1 > dist/tests.txt",
+    "build": "webpack -p && yarn test --verbose 2>&1 > public/tests.txt",
     "test": "ava",
     "test:watch": "ava --watch"
   },
@@ -17,12 +15,10 @@
     "@babel/preset-env": "7.7.7",
     "ava": "2.4.0",
     "babel-loader": "8.0.6",
-    "express": "4.17.1",
     "faster.js": "1.1.1",
     "stimulus": "1.1.1",
     "webpack": "4.41.5",
     "webpack-cli": "3.3.10",
-    "webpack-dev-middleware": "3.7.2",
     "worker-loader": "2.0.0"
   },
   "ava": {
