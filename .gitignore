@@ -2,3 +2,5 @@ node_modules
 public/*.js
 public/*.js.map
 public/tests.txt
+
+.now
