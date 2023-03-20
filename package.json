@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/preset-env": "7.8.7",
     "ava": "3.5.0",
-    "babel-loader": "8.0.6",
+    "babel-loader": "8.3.0",
     "esm": "3.2.25",
     "faster.js": "1.1.1",
     "stimulus": "1.1.1",
